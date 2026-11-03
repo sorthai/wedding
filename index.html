@@ -1186,6 +1186,8 @@ function lbShow(i){
   $("#lbDl").href = big.src; $("#lbDl").setAttribute("download", name);
   $("#lbCount").textContent = LB.list.length > 1 ? `${LB.i + 1} / ${LB.list.length}` : "";
   $("#lbPrev").hidden = $("#lbNext").hidden = LB.list.length < 2;
+  // fetch the neighbours now so swiping feels instant
+  [LB.i - 1, LB.i + 1].forEach(j => { const n = LB.list[(j + LB.list.length) % LB.list.length]; if (n && n.dataset.full) new Image().src = n.dataset.full; });
 }
 function lbOpen(img){
   LB.list = $$("img", img.closest(".view")).filter(x => x.closest(".photo")).sort((a, b) => (+a.dataset.i || 0) - (+b.dataset.i || 0) || 0);
