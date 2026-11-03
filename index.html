@@ -14,6 +14,10 @@
 <meta property="og:image:alt" content="Mudra and Lakshay among palm trees">
 <meta name="twitter:card" content="summary_large_image">
 <title>Letter from Mudra & Lakshay</title>
+<link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Mudra & Lakshay">
 <style>
 /* Layout: an Apple Notes note. Sidebar of notes on desktop; top bar + notes list on phone. */
 :root{
@@ -871,10 +875,19 @@ $$(".checks.todo li").forEach((li, i) => {
 });
 
 /* ---------- scroll: focus line + highlighter ---------- */
+/* how far into the last stretch of the page we are: 0 = not there yet, 1 = at the very end */
+function endness(){
+  const vh = innerHeight, max = document.documentElement.scrollHeight - vh;
+  if (max < vh * 0.25) return 2;                                   // short page: nothing to scroll, keep it all sharp
+  const zone = Math.min(vh * 0.6, max * 0.5), left = max - scrollY;
+  return Math.min(1, Math.max(0, 1 - left / zone));
+}
 function focusPass(){
-  const vh = innerHeight, mid = vh * (scrollY < vh * 0.3 ? 0.36 : 0.5), band = vh * 0.22;
+  const vh = innerHeight, e = endness();
+  // near the end the focus slides down so the last lines can be read sharp
+  const mid = vh * ((scrollY < vh * 0.3 ? 0.36 : 0.5) * (1 - Math.min(e, 1)) + 0.82 * Math.min(e, 1)), band = vh * (0.22 + 0.3 * Math.min(e, 1));
   $$(".view:not([hidden]) .r").forEach(el => {
-    if (reduced){ el.style.opacity = 1; return; }
+    if (reduced || e > 1){ el.style.opacity = 1; return; }
     const r = el.getBoundingClientRect();
     const c = Math.min(Math.max(mid, r.top), r.bottom);      // nearest point of element to centre
     const d = Math.max(0, Math.abs(c - mid) - band) / (vh * 0.3);
@@ -882,9 +895,10 @@ function focusPass(){
   });
 }
 function highlightPass(){
+  const e = endness();
   $$(".view:not([hidden]) .hl:not(.on)").forEach(h => {
     const r = h.getBoundingClientRect();
-    if (r.top < innerHeight * 0.62 && r.bottom > 0) h.classList.add("on");
+    if (r.top < innerHeight * (e >= 1 ? 0.98 : 0.62) && r.bottom > 0) h.classList.add("on");
   });
 }
 let ticking = false;
