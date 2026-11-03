@@ -22,6 +22,8 @@
   --n-bg:#ffffff; --n-ink:#1c1c1e; --n-grey:#8e8e93; --n-line:#e5e5ea; --n-side:#f2f2f7; --n-accent:#d9a400; --n-sel:#ffe27a;
   /* shared */
   --hl:rgba(255,222,0,.62);
+  /* Mudra / Lakshay: muted European tones (vintage rose, French blue), so the photos stay the hero */
+  --m:#d9738b; --l:#5e87c0; --heart:#e5383b;
   --f-sys:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 *{box-sizing:border-box}
@@ -94,6 +96,13 @@ textarea.field{min-height:120px;resize:vertical}
 .icon-btn{background:none;border:0;padding:6px;display:inline-flex;align-items:center;gap:2px;color:var(--n-accent);font-size:17px}
 .icon-btn svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .topbar .right{display:flex;gap:4px}
+.topbar .left{display:flex;align-items:center;gap:2px;min-width:0}
+.brand{display:inline-flex;align-items:center;padding:4px 6px;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.brand .av{width:30px;height:30px;font-size:0}
+.brand .av.m{box-shadow:0 0 0 2px var(--m),0 0 0 4px #fff}.brand .av.l{box-shadow:0 0 0 2px var(--l),0 0 0 4px #fff}
+.brand .heart{width:14px;height:14px;margin:0 8px;display:inline-block;fill:var(--heart);animation:beat 1.6s ease-in-out infinite}
+@keyframes beat{0%,40%,100%{transform:scale(1)}15%{transform:scale(1.25)}28%{transform:scale(1.05)}}
+.topbar .back + .brand{margin-left:4px}
 .notes .sidebar{display:none}
 .notes main{padding:calc(64px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(56px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));max-width:720px;margin:0 auto}
 .notes .stamp{text-align:center;color:var(--n-grey);font-size:13px;margin-bottom:14px}
@@ -116,17 +125,21 @@ textarea.field{min-height:120px;resize:vertical}
 .notes .photo img{border-radius:12px}
 .notes .photo figcaption{font-size:13px;color:var(--n-grey);margin-top:6px}
 .notes .mnote{display:block;font-size:14px;color:var(--n-grey);margin-top:4px}
-.notes .mnote b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;color:#fff;font-size:11px;margin-right:6px;vertical-align:1px}
-.notes .mnote.m b{background:#ff2d55}.notes .mnote.l b{background:#007aff}
+.notes .mnote b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:#fff;font-size:11px;margin-right:6px;vertical-align:1px}
+.notes .mnote.m b{background:var(--m)}.notes .mnote.l b{background:var(--l)}
 /* Medium-style annotations */
 .has-annot{position:relative}
 .annot{cursor:pointer;border-radius:3px;-webkit-box-decoration-break:clone;box-decoration-break:clone;background-image:linear-gradient(transparent 62%, var(--ann) 62%);transition:background-color .2s;outline:none}
-.annot.m{--ann:rgba(255,45,85,.22);--ann-strong:rgba(255,45,85,.14)}
-.annot.l{--ann:rgba(0,122,255,.2);--ann-strong:rgba(0,122,255,.12)}
+.annot.m{--ann:rgba(217,115,139,.24);--ann-strong:rgba(217,115,139,.13)}
+.annot.l{--ann:rgba(94,135,192,.22);--ann-strong:rgba(94,135,192,.12)}
 .annot:hover,.annot.open,.annot:focus-visible{background-color:var(--ann-strong)}
 .av{display:inline-grid;place-items:center;flex:none;width:24px;height:24px;border-radius:50%;color:#fff;font-size:12px;font-weight:700;font-style:normal}
-.av.m{background:#ff2d55}.av.l{background:#007aff}
-.av.mini{width:17px;height:17px;font-size:9.5px;margin-left:6px;vertical-align:2px;box-shadow:0 0 0 2px #fff}
+.av.m{background:var(--m)}.av.l{background:var(--l)}
+/* real faces on the M / L avatars; the colour ring keeps who's who */
+.av.m,.notes .mnote.m b{background:var(--m) url(photos/mudra.jpg) center/cover;color:transparent;box-shadow:0 0 0 1.5px var(--m)}
+.av.l,.notes .mnote.l b{background:var(--l) url(photos/lakshay.jpg) center/cover;color:transparent;box-shadow:0 0 0 1.5px var(--l)}
+.av.mini.m{box-shadow:0 0 0 1.5px var(--m),0 0 0 3px #fff}.av.mini.l{box-shadow:0 0 0 1.5px var(--l),0 0 0 3px #fff}
+.av.mini{width:20px;height:20px;font-size:9.5px;margin-left:6px;vertical-align:2px;box-shadow:0 0 0 2px #fff}
 .annot-pop{position:absolute;left:0;top:calc(100% + 10px);z-index:15;display:grid;gap:10px;width:max-content;max-width:min(320px,100%);background:#fff;color:var(--n-ink);border-radius:14px;padding:12px 14px;font-size:15px;line-height:1.4;
   box-shadow:0 10px 30px rgba(0,0,0,.14),0 0 0 .5px rgba(0,0,0,.08);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .18s,transform .18s,visibility .18s}
 .annot-pop::before{content:"";position:absolute;top:-6px;left:22px;width:12px;height:12px;background:#fff;transform:rotate(45deg);box-shadow:-.5px -.5px 0 rgba(0,0,0,.08)}
@@ -144,6 +157,9 @@ textarea.field{min-height:120px;resize:vertical}
 .notes .letter .lines{margin:0}
 .notes .letter ul.even{display:grid;gap:8px}
 .notes .letter ul.even li{margin:0}
+.notes .letter ul{margin:0}
+.notes .even li.emo{padding-left:0}
+.notes .even li.emo::before{display:none}
 .notes .link-cant{color:var(--n-grey);font-size:15px}
 .notes .ps{border-top:.5px solid var(--n-line);padding-top:16px}
 .notes .ps-title{font-weight:700}
@@ -158,23 +174,31 @@ textarea.field{min-height:120px;resize:vertical}
 .notelist{list-style:none;margin:0;padding:0}
 .notelist button{display:block;width:100%;text-align:left;background:none;border:0;padding:12px 14px;border-radius:10px}
 .notelist .t{font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.notelist .s{font-size:14px;color:var(--n-grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notelist .s{margin-top:2px;font-size:14px;color:var(--n-grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .notelist .s b{color:var(--n-ink);font-weight:400;margin-right:6px}
 .notelist button[aria-current="true"]{background:var(--n-sel)}
-.notes .listview{padding:calc(64px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 120px max(12px,env(safe-area-inset-left,0px))}
-.notes .listview h2{font-size:34px;font-weight:700;margin:0 6px 12px}
+.notes .listview{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;padding:calc(64px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.notes .listview .madewith{margin-top:auto;padding-top:32px}
+.notes .listview h2{font-size:32px;letter-spacing:-.01em;font-weight:700;line-height:1.15;margin:96px 6px 24px}
+/* marigold toran hanging from the top bar on the home screen */
+.toran{position:absolute;left:0;right:0;top:100%;height:100px;pointer-events:none;display:none}
+.notes.show-list .toran{display:block;animation:toranin .9s cubic-bezier(.2,.9,.3,1.2) both}
+.toran svg{display:block;overflow:visible}
+.toran .ladi{transform-box:fill-box;transform-origin:50% 0;animation:sway 4.2s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
+@keyframes toranin{from{opacity:0;transform:translateY(-14px)}}
 .notes .listview .notelist{background:#fff;border-radius:12px;overflow:hidden}
 .notes .listview .notelist button{border-radius:0}
 .notes .listview .notelist li+li button{border-top:.5px solid var(--n-line)}
 .notes.show-list{background:var(--n-side)}
-.notes.show-list .back{visibility:hidden}
+.notes.show-list .back{display:none}
 @media (min-width:900px){
   .notes .sidebar{display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;width:300px;background:var(--n-side);border-right:.5px solid var(--n-line);padding:calc(18px + env(safe-area-inset-top,0px)) 10px 20px max(10px,env(safe-area-inset-left,0px));overflow:auto}
   .notes .sidebar .dots{display:flex;gap:8px;padding:0 6px 18px}
   .notes .sidebar .dots i{width:12px;height:12px;border-radius:50%}
   .notes .sidebar h2{font-size:13px;color:var(--n-grey);font-weight:600;margin:0 14px 6px}
   .notes .topbar{left:300px}
-  .notes .back{visibility:hidden}
+  .notes .back{display:none}
   .notes main{margin-left:300px;margin-right:0;max-width:none;padding-left:clamp(32px,6vw,96px);padding-right:clamp(32px,6vw,96px);padding-bottom:120px}
   .notes main>.view{max-width:680px}
   .notes .listview{display:none!important}
@@ -215,6 +239,15 @@ a.link-cant:hover{text-decoration:underline}
 @keyframes viewin{from{opacity:0;transform:translateX(18px)}}
 @keyframes listin{from{opacity:0;transform:translateX(-18px)}}
 @media (min-width:900px){@keyframes viewin{from{opacity:0;transform:translateY(8px)}}}
+.confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:50}
+.notes a.btn-wa{background:#25d366;color:#fff}
+.notes a.btn-wa:hover{background:#1fbf5b}
+.btn-ghost{display:inline-block;text-decoration:none;color:var(--n-ink);border:1.5px solid var(--n-line);border-radius:14px;padding:12px 24px;font-size:16px;font-weight:600;transition:border-color .15s,background-color .15s}
+.btn-ghost:hover{border-color:#c7c7cc;background:#fafafa}
+.whos{margin-top:28px;display:grid;gap:12px}
+.who-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.who-list li{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--n-side);font-size:15px;animation:stepin .35s ease both}
+.who-list .ini{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#ffe27a;font-size:12px;font-weight:700}
 .madewith{margin-top:40px;text-align:center;color:var(--n-grey);font-size:13px}
 .sidebar .madewith{margin-top:auto;padding-top:24px}
 .notes .listview .count{text-align:center;color:var(--n-grey);font-size:13px;margin:16px 0 0}
@@ -258,13 +291,12 @@ Your friends, ==Mudra & Lakshay are getting married== ❤️.
 We started this journey at BITS Pilani, when we were 19. A few know that it was an ==“experimental dating”==.
 
 ![Oasis, 2018](photos/oasis-2018.jpg)
+![Jaipur, 2019](photos/jaipur-2019.jpg)
 
 At that time, they weren’t mature enough to understand what it takes to build a relationship.
 
 But, Mudra gave it time. It was very hard to be with Lakshay.
 M: Written by Mudra.
-
-![Us, fighting](TODO)
 
 ## ==Cut to: 8 years later.==
 
@@ -272,9 +304,9 @@ We are still in love & getting married.
 
 As you have been in our
 
-- Highs and lows
-- Trips and college sessions
-- Cafés and house parties
+- 🎢 Highs and lows
+- 🎒 Trips and college sessions
+- 🎉 Cafés and house parties
 
 this time, you need to play ==A VERY IMPORTANT ROLE==.
 
@@ -371,15 +403,19 @@ If you're coming early or staying back, here's our list.
     <footer class="madewith">Made with ❤️ when in ❤️</footer>
   </aside>
   <header class="topbar notes-only">
-    <button class="icon-btn back" id="backBtn" aria-label="All notes"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Notes</button>
+    <div class="left">
+      <button class="icon-btn back" id="backBtn" aria-label="Back to the invitation"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <a class="brand" href="#" aria-label="Mudra loves Lakshay. Home" title="Mudra ❤️ Lakshay"><b class="av m" aria-hidden="true">M</b><svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3.1 4.5 6.7 4.5c2.1 0 3.6 1.2 5.3 3.1 1.7-1.9 3.2-3.1 5.3-3.1 3.6 0 5.8 3.7 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg><b class="av l" aria-hidden="true">L</b></a>
+    </div>
     <div class="right">
       <a class="icon-btn" id="calTop" target="_blank" rel="noopener" aria-label="Add the wedding to your calendar"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg></a>
       <button class="icon-btn" id="shareBtn" aria-label="Copy the link to this note"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg></button>
     </div>
+    <div class="toran" id="toran" aria-hidden="true"></div>
   </header>
 
   <section class="listview notes-only" id="listView" hidden>
-    <h2>Notes</h2>
+    <h2>Wedding Invitation</h2>
     <ul class="notelist" id="phoneList"></ul>
     <p class="count" id="noteCount"></p>
     <footer class="madewith">Made with ❤️ when in ❤️</footer>
@@ -420,6 +456,13 @@ If you're coming early or staying back, here's our list.
             <button type="button" class="opt" data-v="Bride's side"><span class="dot"></span>Bride's side</button>
           </div>
           <p class="sass">If you think you're coming from both, choose groom because it's obvious, baby.</p>
+        </div>
+
+        <div class="step" data-step="known">
+          <p class="qn" data-count></p>
+          <label class="qt" for="r-known" id="knownQ">How do you know the groom or the bride?</label>
+          <p class="hint">School, BITS, work, family, Instagram… tell us the story in a line.</p>
+          <input class="field" id="r-known" placeholder="e.g. Hostel neighbours at BITS">
         </div>
 
         <div class="step" data-step="attendance">
@@ -499,10 +542,15 @@ If you're coming early or staying back, here's our list.
       <ul class="checks done-list" id="doneList"></ul>
       <p class="aside" id="previewNote" hidden>Preview mode: replies aren't sent to the Google Sheet from a local preview.</p>
       <div class="cta">
-        <a class="btn-coming" id="calLink" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Add to calendar</a>
+        <a class="btn-coming btn-wa" id="waLink" target="_blank" rel="noopener">Join the WhatsApp group</a>
+        <a class="btn-ghost" id="calLink" target="_blank" rel="noopener">Add to calendar</a>
         <button class="link-cant" id="editReply">Change my reply</button>
         <button class="link-cant" id="reread">Read the letter again</button>
       </div>
+      <section class="whos" id="whos" hidden>
+        <p class="sub">Who else is coming</p>
+        <ul class="who-list" id="whoList"></ul>
+      </section>
     </article>
 
     <!-- ================= SIDE NOTES (notes skin) ================= -->
@@ -566,6 +614,7 @@ If you're coming early or staying back, here's our list.
 <script>
 /* ================= EDIT HERE ================= */
 const CONFIG = {
+  waGroup: "https://chat.whatsapp.com/I61ynoHrUeu3iLpXDfDn9J?mode=gi_t",
   sheetUrl: "https://script.google.com/macros/s/AKfycbxWgVs7sLBNMMnzrjOnfK0wCUbMRN9XRF53NP_jEd7qRcn6dmBsJ-Ry4dF8Tig7l-x4/exec"
   // Sheet: https://docs.google.com/spreadsheets/d/1gWplNLtD7InVpQAH5L8th1c_hUuHk1VHPSADstBOFGo/edit
 };
@@ -647,7 +696,7 @@ function renderLetter(src, el = $("#letterBody")){
       }
       else if (l.startsWith("- ")){
         let items = "";
-        while (i < lines.length && lines[i].startsWith("- ")){ const t = inline(lines[i].slice(2)); i++; items += `<li class="r has-annot">${annotate(t, getNotes())}</li>`; }
+        while (i < lines.length && lines[i].startsWith("- ")){ const t = inline(lines[i].slice(2)); i++; items += `<li class="r has-annot${/^\p{Extended_Pictographic}/u.test(t) ? " emo" : ""}">${annotate(t, getNotes())}</li>`; }
         html += `<ul class="even">${items}</ul>`;
       }
       else if (/^[ML]: /.test(l)){ html += notes(); }
@@ -784,8 +833,8 @@ const R = { side: "", attendance: "", missing: [], partner: "", arr_t: "", dep_t
 let cant = false, si = 0;
 const stepEl = k => $(`.step[data-step="${k}"]`);
 function flow(){
-  if (cant) return ["name", "whatsapp", "side", "notes"];
-  const base = ["name", "whatsapp", "side", "attendance"];
+  if (cant) return ["name", "whatsapp", "side", "known", "notes"];
+  const base = ["name", "whatsapp", "side", "known", "attendance"];
   if (R.attendance === "Can't make it") return base;
   return base.concat(["partner", "city", "arrival", "departure", "notes"]);
 }
@@ -826,6 +875,7 @@ function validate(k){
     case "name": return v("#r-name").length > 1 ? "" : "Tell us your full name.";
     case "whatsapp": return v("#r-wa").replace(/\D/g, "").length >= 10 ? "" : "That number looks short. Add the country code if you're outside India.";
     case "side": return R.side ? "" : "Pick a side. (Groom, obviously.)";
+    case "known": return v("#r-known").length > 1 ? "" : "Just a line. How do you know us?";
     case "attendance":
       if (!R.attendance) return "Pick one.";
       if (R.attendance === "Missing a bit" && !R.missing.length) return "Tap the event(s) you'll miss.";
@@ -852,6 +902,7 @@ function showStep(i){
   const f = flow(); si = Math.max(0, Math.min(i, f.length - 1));
   $$(".step").forEach(el => el.classList.toggle("active", el.dataset.step === f[si]));
   const el = stepEl(f[si]);
+  if (f[si] === "known") $("#knownQ").textContent = R.side === "Bride's side" ? "How do you know Mudra?" : "How do you know Lakshay?";
   $(".qn", el).textContent = `${si + 1} of ${f.length}`;
   $("#progBar").style.width = `${((si + 1) / f.length) * 100}%`;
   $("#err").textContent = "";
@@ -887,7 +938,7 @@ async function submit(){
   const isCant = cant || R.attendance === "Can't make it";
   const when = w => R[w + "_u"] ? "Not decided yet" : `${v("#r-" + w)} · ${R[w + "_t"]}`;
   const p = {
-    name: v("#r-name"), whatsapp: v("#r-wa"), side: R.side,
+    name: v("#r-name"), whatsapp: v("#r-wa"), side: R.side, how_known: v("#r-known"),
     attendance: isCant ? "Can't make it" : R.attendance,
     missing_events: !isCant && R.attendance === "Missing a bit" ? R.missing.join(", ") : "",
     partner_joining: isCant ? "" : R.partner, partner_name: !isCant && R.partner === "Yes" ? v("#r-partner") : "",
@@ -905,6 +956,7 @@ async function submit(){
   store.set("letter-reply", JSON.stringify(p));
   setUrl("done", true);
   done(p, saved);
+  setTimeout(() => confetti("done"), 250);
 }
 
 function done(p, saved){
@@ -925,11 +977,27 @@ function done(p, saved){
   ];
   $("#doneList").innerHTML = items.map(t => `<li><span class="box"></span><span>${esc(t)}</span></li>`).join("");
   $("#calLink").hidden = isCant;
+  $("#waLink").hidden = isCant; $("#waLink").href = CONFIG.waGroup;
+  loadGuests(p);
   $("#calLink").href = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent("Mudra & Lakshay's wedding") +
     "&dates=20270102/20270104&location=" + encodeURIComponent("Amritam Palace, Jodhpur") +
     "&details=" + encodeURIComponent("Haldi & Sangeet on 2 Jan. Maiyra & Wedding on 3 Jan. It's your responsibility.");
   $("#previewNote").hidden = saved;
   show("done");
+}
+/* who else is coming: first names + initial, from the Sheet (needs the updated Apps Script) */
+async function loadGuests(p){
+  $("#whos").hidden = true;
+  if (!CONFIG.sheetUrl || p.attendance === "Can't make it") return;
+  try {
+    const r = await fetch(CONFIG.sheetUrl + "?list=1");
+    const { names } = await r.json();
+    const me = p.name.split(" ")[0].toLowerCase();
+    const others = (names || []).filter(n => n.split(" ")[0].toLowerCase() !== me);
+    if (!others.length) return;
+    $("#whoList").innerHTML = others.map(n => `<li><span class="ini">${esc(n[0])}</span>${esc(n)}</li>`).join("");
+    $("#whos").hidden = false;
+  } catch(e){}
 }
 const nice = w => { const m = /^(\d{4})-(\d\d)-(\d\d) · (.*)$/.exec(w || ""); if (!m) return w; return new Date(+m[1], m[2] - 1, +m[3]).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) + ", " + m[4]; };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -941,7 +1009,7 @@ function lastReply(){ try { return JSON.parse(store.get("letter-reply") || "null
 (function restore(){
   const p = lastReply();
   if (!p) return;
-  $("#r-name").value = p.name || ""; $("#r-wa").value = p.whatsapp || ""; $("#r-notes").value = p.notes || "";
+  $("#r-name").value = p.name || ""; $("#r-wa").value = p.whatsapp || ""; $("#r-known").value = p.how_known || ""; $("#r-notes").value = p.notes || "";
   if (p.side){ R.side = p.side; press("side", p.side); }
   if (p.attendance){ R.attendance = p.attendance; press("attendance", p.attendance); $("#missWrap").hidden = p.attendance !== "Missing a bit"; }
   if (p.missing_events){ R.missing = p.missing_events.split(", "); R.missing.forEach(m => press("missing", m)); }
@@ -952,6 +1020,118 @@ function lastReply(){ try { return JSON.parse(store.get("letter-reply") || "null
     else if (val && val.includes(" · ")){ const [d, t] = val.split(" · "); $(`#r-${w}`).value = d; R[w + "_t"] = t; press(w + "_t", t); }
   });
 })();
+
+/* ---------- confetti: once when the link opens, again when the RSVP is done ---------- */
+function confetti(kind = "done"){
+  if (reduced) return;
+  const c = document.createElement("canvas"), x = c.getContext("2d"), dpr = devicePixelRatio || 1;
+  const W = innerWidth, H = innerHeight;
+  c.className = "confetti"; c.width = W * dpr; c.height = H * dpr; x.scale(dpr, dpr);
+  document.body.appendChild(c);
+  // marigold, saffron, rose, blush, French blue, sage, gold, red
+  const cols = ["#f4a259", "#f6bd60", "#d9738b", "#f2b5c4", "#5e87c0", "#84a98c", "#e9c46a", "#e5383b"];
+  const pick = a => a[Math.random() * a.length | 0], rnd = (a, b) => a + Math.random() * (b - a);
+  const ps = [];
+  // two party poppers from the bottom corners
+  const n = kind === "welcome" ? 90 : 110;
+  [1, -1].forEach(dir => { for (let i = 0; i < n; i++) ps.push({
+    x: dir > 0 ? -10 : W + 10, y: H * .92, vx: dir * rnd(4, 11) * Math.min(1.4, W / 500), vy: -rnd(15, 24) * Math.min(1.25, Math.max(.8, H / 800)),
+    g: rnd(.24, .32), drag: .985, w: rnd(6, 11), h: rnd(4, 8), r: rnd(0, 6), vr: rnd(-.3, .3), c: pick(cols), shape: Math.random() < .5 ? "rect" : "dot", delay: rnd(0, 250)
+  }); });
+  // then marigold petals drifting down (welcome only)
+  if (kind === "welcome") for (let i = 0; i < 45; i++) ps.push({
+    x: rnd(0, W), y: rnd(-H * .6, -20), vx: rnd(-.4, .4), vy: rnd(1.2, 2.2), g: 0, drag: 1, sway: rnd(.6, 1.6), ph: rnd(0, 6),
+    w: rnd(9, 14), h: rnd(6, 9), r: rnd(0, 6), vr: rnd(-.05, .05), c: pick(["#f4a259", "#f6bd60", "#e9c46a", "#f2b5c4"]), shape: "petal", delay: rnd(500, 1600)
+  });
+  const life = kind === "welcome" ? 6200 : 4200;
+  const t0 = performance.now(); let last = t0;
+  setTimeout(() => c.remove(), life + 600);
+  (function tick(t){
+    const age = t - t0, k = Math.min(3, (t - last) / 16.7); last = t;
+    x.clearRect(0, 0, W, H);
+    x.globalAlpha = Math.max(0, Math.min(1, (life - age) / 900));
+    ps.forEach(q => {
+      if (age < q.delay) return;
+      q.vy += q.g * k; q.vx *= Math.pow(q.drag, k); q.vy *= q.g ? Math.pow(q.drag, k) : 1;
+      q.x += (q.vx + (q.sway ? Math.sin(age / 500 + q.ph) * q.sway : 0)) * k; q.y += q.vy * k; q.r += q.vr * k;
+      x.save(); x.translate(q.x, q.y); x.rotate(q.r); x.fillStyle = q.c;
+      if (q.shape === "petal"){ x.beginPath(); x.moveTo(0, -q.h); x.quadraticCurveTo(q.w, 0, 0, q.h); x.quadraticCurveTo(-q.w, 0, 0, -q.h); x.fill(); }
+      else if (q.shape === "dot"){ x.beginPath(); x.ellipse(0, 0, q.w * .45, q.h * .45, 0, 0, Math.PI * 2); x.fill(); }
+      else x.fillRect(-q.w / 2, -q.h / 4, q.w, q.h / 2);
+      x.restore();
+    });
+    if (age < life && c.isConnected) requestAnimationFrame(tick); else c.remove();
+  })(t0);
+}
+/* ---------- toran: a marigold garland with hanging strands, drawn to the screen width ---------- */
+function drawToran(){
+  const el = $("#toran"), W = el.clientWidth || innerWidth, n = Math.max(3, Math.round(W / 62)), step = W / n, top = 3, sag = 17;
+  const f = v => v.toFixed(2), rot = (a, b) => (a * 47 + b * 83) % 360;
+  // one detailed drawing per flower, reused with <use>
+  const petal = (L, w) => `M0 0C${f(w)} ${f(-L * .25)} ${f(w * 1.15)} ${f(-L * .75)} ${f(w * .55)} ${f(-L * .95)}Q${f(w * .28)} ${f(-L * 1.05)} 0 ${f(-L * .93)}Q${f(-w * .28)} ${f(-L * 1.05)} ${f(-w * .55)} ${f(-L * .95)}C${f(-w * 1.15)} ${f(-L * .75)} ${f(-w)} ${f(-L * .25)} 0 0Z`;
+  const ring = (count, L, w, fill, off, stroke) => Array.from({ length: count }, (_, k) => { const j = 1 + .09 * Math.sin(k * 2.7 + off);
+    return `<path transform="rotate(${f(k * 360 / count + off + 4 * Math.sin(k * 1.3))})" d="${petal(L * j, w * (2 - j))}" fill="${fill}" stroke="${stroke}" stroke-width=".3"/>`; }).join("");
+  const grad = (id, stops) => `<radialGradient id="${id}" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="10">${stops.map(([o, c]) => `<stop offset="${o}" stop-color="${c}"/>`).join("")}</radialGradient>`;
+  const marigold = (id, base, stroke, core) => `<symbol id="${id}" viewBox="-10 -10 20 20" overflow="visible">`
+    + `<ellipse cy="1.2" rx="9.6" ry="9" fill="rgba(90,40,10,.12)"/><circle r="8.6" fill="${base}"/>` + ring(16, 9.6, 2.3, `url(#${id}1)`, 0, stroke) + ring(13, 7.4, 2.2, `url(#${id}2)`, 7, stroke) + ring(10, 5.2, 1.9, `url(#${id}3)`, 3, stroke)
+    + `<path d="M-6.5 -3.5A7.5 7.5 0 0 1 -1 -7.4" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.2" stroke-linecap="round"/><circle r="2" fill="${core}"/>` + [0, 1, 2, 3, 4, 5].map(k => `<circle cx="${f(Math.cos(k) * 1.1)}" cy="${f(Math.sin(k) * 1.1)}" r=".38" fill="#7a3510" opacity=".7"/>`).join("") + `</symbol>`;
+  const defs = `<defs>`
+    + grad("mo1", [[0, "#f7ad4c"], [.7, "#ec8a2a"], [1, "#d06a19"]]) + grad("mo2", [[0, "#f9bb5a"], [1, "#ee9533"]]) + grad("mo3", [[0, "#fccd6e"], [1, "#f3a540"]])
+    + grad("my1", [[0, "#f9d35e"], [.7, "#eaae2c"], [1, "#d6921a"]]) + grad("my2", [[0, "#fbdc74"], [1, "#f1bb3c"]]) + grad("my3", [[0, "#fde894"], [1, "#f5c84e"]])
+    + grad("ro", [[0, "#7d1d2e"], [.55, "#a9304a"], [1, "#d25b6f"]]) + grad("rm", [[0, "#9a2840"], [1, "#e27a8a"]])
+    + grad("lf", [[0, "#e49aab"], [.32, "#f6d6dd"], [1, "#fffaf8"]]) + grad("lb", [[0, "#efc3cc"], [1, "#fbeff1"]])
+    + `<linearGradient id="lv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86b06f"/><stop offset="1" stop-color="#4b7a3b"/></linearGradient>`
+    + `<linearGradient id="ht" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f15a60"/><stop offset="1" stop-color="#c4242b"/></linearGradient>`
+    + marigold("mo", "#c25f17", "rgba(140,60,10,.22)", "#b5541a")
+    + marigold("my", "#cf8f1a", "rgba(150,95,10,.22)", "#c27d14")
+    // rose: green sepals, two rings of cupped petals, a spiral bud
+    + `<symbol id="rose" viewBox="-10 -10 20 20" overflow="visible">`
+    + [0, 1, 2, 3, 4].map(k => `<path transform="rotate(${k * 72 + 36})" d="M0 0C1.6 -3 1.4 -7 0 -10.5C-1.4 -7 -1.6 -3 0 0Z" fill="#5c8a4b"/>`).join("")
+    + [0, 1, 2, 3, 4].map(k => `<path transform="rotate(${k * 72}) scale(.95)" d="M0 0C5 -1 8.5 -4 8 -7.5C7.4 -10 2.5 -10.4 0 -8.8C-2.5 -10.4 -7.4 -10 -8 -7.5C-8.5 -4 -5 -1 0 0Z" fill="url(#ro)" stroke="#86223a" stroke-width=".4"/>`).join("")
+    + [0, 1, 2, 3].map(k => `<path transform="rotate(${k * 90 + 45}) scale(.66)" d="M0 0C5 -1 8.5 -4 8 -7.5C7.4 -10 2.5 -10.4 0 -8.8C-2.5 -10.4 -7.4 -10 -8 -7.5C-8.5 -4 -5 -1 0 0Z" fill="url(#rm)" stroke="#8e2a3f" stroke-width=".45"/>`).join("")
+    + `<ellipse cy=".8" rx="4.4" ry="4" fill="#8f2439"/>`
+    + `<path d="M-4.2 .6C-4.4 -3.4 -.6 -4.8 2.4 -3.6C4.4 -2.6 4.6 .4 3.4 2C2.6 .2 .6 -1.2 -1.4 -.8C-3 -.5 -3.8 .2 -4.2 .6Z" fill="#c9566a" stroke="#8e2a3f" stroke-width=".35"/>`
+    + `<path d="M3.6 1.4C3.2 4 -.4 5 -2.8 3.6C-4.4 2.6 -4.4 .8 -3.6 .2C-2.6 1.8 -.4 2.6 1.4 2.2C2.4 2 3.2 1.6 3.6 1.4Z" fill="#b8445a" stroke="#86223a" stroke-width=".35"/>`
+    + `<path d="M-1.8 .4C-1.8 -1.6 .6 -2.2 1.8 -1C2.6 -.2 2.2 1.2 1.2 1.4C1 .4 .2 -.2 -.6 0C-1.2 .1 -1.6 .3 -1.8 .4Z" fill="#e07c8c" stroke="#9a3045" stroke-width=".3"/>`
+    + `<path d="M-5.4 -4.2C-4.4 -6 -2 -6.8 .2 -6.6" fill="none" stroke="#f3b3bd" stroke-opacity=".6" stroke-width=".7" stroke-linecap="round"/></symbol>`
+    // lily: three back petals, three front petals with a blush throat and speckles, stamens
+    + `<symbol id="lily" viewBox="-11 -11 22 22" overflow="visible">`
+    + [0, 1, 2].map(k => `<path transform="rotate(${k * 120 + 60})" d="M0 0C2.8 -2.5 3.4 -6.8 1.7 -9.6C1.1 -10.5 .4 -11 0 -11.3C-.4 -11 -1.1 -10.5 -1.7 -9.6C-3.4 -6.8 -2.8 -2.5 0 0Z" fill="url(#lb)" stroke="#d79aa8" stroke-width=".45"/>`).join("")
+    + [0, 1, 2].map(k => `<g transform="rotate(${k * 120})"><path d="M0 0C3 -2.6 3.6 -7 1.8 -9.9C1.2 -10.8 .4 -11.2 0 -11.6C-.4 -11.2 -1.2 -10.8 -1.8 -9.9C-3.6 -7 -3 -2.6 0 0Z" fill="url(#lf)" stroke="#d48d9d" stroke-width=".45"/>`
+      + `<path d="M0 -1V-9.5" stroke="#e3a3b1" stroke-width=".5"/><circle cx=".7" cy="-3.2" r=".33" fill="#a94a62"/><circle cx="-.6" cy="-4.1" r=".3" fill="#a94a62"/><circle cx=".4" cy="-5.2" r=".26" fill="#a94a62"/></g>`).join("")
+    + [0, 1, 2, 3, 4, 5].map(k => { const a = (k * 60 + 30) * Math.PI / 180, x = Math.cos(a) * 6, y = Math.sin(a) * 6; return `<path d="M0 0L${f(x)} ${f(y)}" stroke="#cfae63" stroke-width=".45"/><ellipse cx="${f(x)}" cy="${f(y)}" rx="1" ry=".45" transform="rotate(${k * 60 + 120} ${f(x)} ${f(y)})" fill="#9c4a22"/>`; }).join("")
+    + `<circle r="1.3" fill="#c6d48a"/></symbol>`
+    // mango leaf with midrib and veins
+    + `<symbol id="leaf" viewBox="-5 0 10 18" overflow="visible"><path d="M0 0C4.6 4.6 4.8 11.6 0 18C-4.8 11.6 -4.6 4.6 0 0Z" fill="url(#lv)"/>`
+    + `<path d="M0 .8V16.6" stroke="#a9cc8e" stroke-width=".55"/>` + [4, 7.5, 11].map(y => `<path d="M0 ${y}L2.6 ${y - 1.8}M0 ${y}L-2.6 ${y - 1.8}" stroke="#a9cc8e" stroke-width=".35"/>`).join("") + `</symbol>`
+    + `<symbol id="heart" viewBox="-10 -10 20 20" overflow="visible"><path d="M0 9C-6 5-10 2-10-3C-10-7-6-9-3-8C-1.6-7.5-.6-6.5 0-5.4C.6-6.5 1.6-7.5 3-8C6-9 10-7 10-3C10 2 6 5 0 9Z" fill="url(#ht)" stroke="#a51d24" stroke-width=".5"/><ellipse cx="-4.6" cy="-4" rx="2.2" ry="1.3" transform="rotate(-30 -4.6 -4)" fill="#fff" opacity=".45"/></symbol>`
+    + `</defs>`;
+  const use = (id, x, y, r, a = 0) => `<use href="#${id}" x="-10" y="-10" width="20" height="20" transform="translate(${f(x)} ${f(y)}) rotate(${a}) scale(${f(r / 10)})"/>`;
+  const leaf = (x, y, a) => `<use href="#leaf" x="-5" y="0" width="10" height="18" transform="translate(${f(x)} ${f(y)}) rotate(${a})"/>`;
+  let rope = "", leaves = "", swag = "", strands = "";
+  for (let i = 0; i < n; i++){
+    const x0 = i * step, x1 = x0 + step, cx = x0 + step / 2, cy = top + sag * 2;
+    rope += `M${f(x0)} ${top}Q${f(cx)} ${cy} ${f(x1)} ${top}`;
+    const pt = t => [(1 - t) * (1 - t) * x0 + 2 * (1 - t) * t * cx + t * t * x1, (1 - t) * (1 - t) * top + 2 * (1 - t) * t * cy + t * t * top];
+    [.3, .7].forEach(t => { const [x, y] = pt(t); leaves += leaf(x, y + 1, t < .5 ? 14 : -14); });
+    for (let k = 1; k < 8; k++){ if (k === 4) continue; const [x, y] = pt(k / 8); swag += use(k % 2 ? "mo" : "my", x, y, 5.3, rot(i, k)); }
+    const [mx, my] = pt(.5); swag += i % 2 ? use("lily", mx, my + 1, 8.6, 15) : use("rose", mx, my, 6.6, rot(i, 9));
+  }
+  for (let i = 0; i <= n; i++){
+    const x = i * step, len = i % 2 ? 6 : 4, end = top + 6 + len * 9 + 3, kind = i % 3;
+    let g = `<g class="ladi" style="animation-delay:${f(-i * .55)}s"><path d="M${f(x)} ${top}V${end}" stroke="#a87a2c" stroke-width=".8"/>`;
+    for (let k = 0; k < len; k++) g += use(k % 2 ? "my" : "mo", x + (k % 2 ? .4 : -.4), top + 6 + k * 9, 5, rot(i + 3, k));
+    g += leaf(x, end - 6, 0) + (kind === 0 ? use("rose", x, end, 7, rot(i, 2)) : kind === 1 ? use("lily", x, end + 2, 10, 0) : use("heart", x, end + 1, 6.5, 0)) + "</g>";
+    strands += g;
+  }
+  el.innerHTML = `<svg width="${W}" height="110" viewBox="0 0 ${W} 110">${defs}<path d="${rope}" fill="none" stroke="#a87a2c" stroke-width="1"/>${leaves}${swag}${strands}</svg>`;
+}
+drawToran();
+let toranW = innerWidth;
+addEventListener("resize", () => { if (innerWidth !== toranW){ toranW = innerWidth; drawToran(); } });
+
+// every load / refresh of the home page: poppers + petals
+if ((ROUTES[decodeURIComponent(location.hash.slice(1))] || "list") === "list") setTimeout(() => confetti("welcome"), 500);
 
 /* invited by name: start the form with it */
 if (toName && !$("#r-name").value) $("#r-name").value = toName;
