@@ -9,7 +9,7 @@
 <meta property="og:type" content="website">
 <title>Letter from Mudra & Lakshay</title>
 <style>
-/* Layout: an Apple Notes note. Sidebar of notes on desktop; top bar + bottom toolbar on phone. */
+/* Layout: an Apple Notes note. Sidebar of notes on desktop; top bar + notes list on phone. */
 :root{
   color-scheme: light;
   /* notes skin */
@@ -86,14 +86,10 @@ textarea.field{min-height:120px;resize:vertical}
   background:rgba(255,255,255,.86);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid transparent;transition:border-color .2s}
 .notes.scrolled .topbar{border-bottom-color:var(--n-line)}
 .icon-btn{background:none;border:0;padding:6px;display:inline-flex;align-items:center;gap:2px;color:var(--n-accent);font-size:17px}
-.tool{flex-direction:column;gap:3px;font-size:10.5px;font-weight:500;letter-spacing:.01em;min-width:56px;text-decoration:none}
 .icon-btn svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .topbar .right{display:flex;gap:4px}
-.notes .toolbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-around;
-  padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-  background:rgba(249,249,249,.9);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-top:.5px solid var(--n-line)}
 .notes .sidebar{display:none}
-.notes main{padding:calc(64px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(110px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));max-width:720px;margin:0 auto}
+.notes main{padding:calc(64px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(56px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));max-width:720px;margin:0 auto}
 .notes .stamp{text-align:center;color:var(--n-grey);font-size:13px;margin-bottom:14px}
 .notes .letter{font-size:17px;line-height:1.5;display:grid;gap:16px}
 .notes .title{font-size:28px;font-weight:700;letter-spacing:-.01em;line-height:1.2;margin:0}
@@ -137,7 +133,7 @@ textarea.field{min-height:120px;resize:vertical}
 .notes .btn-coming{background:#1c1c1e;color:#fff;border-radius:14px;padding:14px 28px;font-size:17px}
 .notes .btn-coming:hover{background:#000}
 .notes .sub{font-weight:700;font-size:20px;margin-top:6px}
-#details{scroll-margin-top:84px}
+.notes .sub + ul.even{margin:8px 0 0}
 .notes .letter hr{border:0;border-top:.5px solid var(--n-line);margin:8px 0;width:100%}
 .notes .letter .lines{margin:0}
 .notes .letter ul.even{display:grid;gap:8px}
@@ -164,21 +160,63 @@ textarea.field{min-height:120px;resize:vertical}
 .notes .listview .notelist{background:#fff;border-radius:12px}
 .notes .listview .notelist li+li button{border-top:.5px solid var(--n-line);border-radius:0}
 .notes.show-list{background:var(--n-side)}
+.notes.show-list .back{visibility:hidden}
 @media (min-width:900px){
-  .notes .sidebar{display:block;position:fixed;top:0;bottom:0;left:0;width:300px;background:var(--n-side);border-right:.5px solid var(--n-line);padding:calc(18px + env(safe-area-inset-top,0px)) 10px 20px max(10px,env(safe-area-inset-left,0px));overflow:auto}
+  .notes .sidebar{display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;width:300px;background:var(--n-side);border-right:.5px solid var(--n-line);padding:calc(18px + env(safe-area-inset-top,0px)) 10px 20px max(10px,env(safe-area-inset-left,0px));overflow:auto}
   .notes .sidebar .dots{display:flex;gap:8px;padding:0 6px 18px}
   .notes .sidebar .dots i{width:12px;height:12px;border-radius:50%}
   .notes .sidebar h2{font-size:13px;color:var(--n-grey);font-weight:600;margin:0 14px 6px}
   .notes .topbar{left:300px}
   .notes .back{visibility:hidden}
-  .notes .toolbar{left:300px;top:0;bottom:auto;right:auto;width:auto;background:none;border:0;backdrop-filter:none;-webkit-backdrop-filter:none;padding:calc(8px + env(safe-area-inset-top,0px)) 0 0 20px;gap:4px;z-index:21}
   .notes main{margin-left:300px;margin-right:0;max-width:none;padding-left:clamp(32px,6vw,96px);padding-right:clamp(32px,6vw,96px);padding-bottom:120px}
   .notes main>.view{max-width:680px}
   .notes .listview{display:none!important}
 }
 
 
-@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* =============== POLISH: hover, press, motion =============== */
+html:has(.show-list){background:var(--n-side)}
+a.btn-coming,a.link-cant{text-decoration:none;display:inline-block}
+a.link-cant:hover{text-decoration:underline}
+.icon-btn{border-radius:8px;transition:background-color .15s,transform .12s}
+.icon-btn:hover{background:rgba(217,164,0,.12)}
+.icon-btn:active{transform:scale(.92)}
+.notelist button{transition:background-color .15s}
+.notelist button:hover{background:rgba(0,0,0,.05)}
+.notelist button[aria-current="true"]:hover{background:var(--n-sel)}
+.notelist button:active{background:rgba(0,0,0,.08)}
+.notes .btn-coming{transition:background-color .15s,transform .12s,box-shadow .2s}
+.notes .btn-coming:hover{box-shadow:0 6px 18px rgba(0,0,0,.18);transform:translateY(-1px)}
+.notes .btn-coming:active{transform:scale(.97);box-shadow:none}
+.link-cant{transition:color .15s}
+.notes .link-cant:hover{color:var(--n-ink)}
+.opt,.chip{transition:border-color .15s,background-color .15s,transform .12s}
+.opt:hover,.chip:hover{border-color:#aeaeb2}
+.opt:active,.chip:active{transform:scale(.985)}
+.opt[aria-pressed="true"]:hover,.chip[aria-pressed="true"]:hover{border-color:var(--acc)}
+.navrow .back:hover{opacity:1}
+.notes .checks.todo li{border-radius:8px;transition:background-color .15s}
+@media (hover:hover){.notes .checks.todo li:hover{background:rgba(0,0,0,.035)}}
+.notes .checks.todo li .box{transition:background-color .2s,border-color .2s,transform .25s cubic-bezier(.3,1.6,.5,1)}
+.notes .checks.todo li.ticked .box{transform:scale(1.08)}
+.notes .checks.todo li span:last-child{transition:color .2s}
+.notes .photo img{transition:transform .3s ease,box-shadow .3s ease}
+@media (hover:hover){.notes .photo img:hover{transform:scale(1.03) rotate(-.6deg);box-shadow:0 10px 28px rgba(0,0,0,.16)}}
+/* views slide in like a pushed note; the list slides back */
+#main > .view:not([hidden]){animation:viewin .32s cubic-bezier(.2,.8,.2,1)}
+.listview:not([hidden]){animation:listin .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes viewin{from{opacity:0;transform:translateX(18px)}}
+@keyframes listin{from{opacity:0;transform:translateX(-18px)}}
+@media (min-width:900px){@keyframes viewin{from{opacity:0;transform:translateY(8px)}}}
+.madewith{margin-top:40px;text-align:center;color:var(--n-grey);font-size:13px}
+.sidebar .madewith{margin-top:auto;padding-top:24px}
+.notes .listview .count{text-align:center;color:var(--n-grey);font-size:13px;margin:16px 0 0}
+.toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));z-index:40;transform:translate(-50%,12px);opacity:0;pointer-events:none;
+  background:rgba(28,28,30,.92);color:#fff;font-size:15px;font-weight:500;padding:10px 16px;border-radius:999px;transition:opacity .2s,transform .25s cubic-bezier(.2,.8,.2,1)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (min-width:900px){.toast{left:calc(50% + 150px)}}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
@@ -260,6 +298,62 @@ The stay is on us.
 | 3 Jan ’27 | Morning | Maiyra | Traditional colours |
 | 3 Jan ’27 | Evening | Phere | Whatever you like |
 </script>
+
+<!-- Other notes, same markup as the letter. -->
+<script type="text/plain" id="note-praises">
+# Praises of Mudra
+
+Lakshay is still writing this one.
+It's a long list.
+</script>
+
+<script type="text/plain" id="note-jodhpur">
+# What to do in Jodhpur?
+
+If you're coming early or staying back, here's our list.
+
+### See
+- Mehrangarh Fort. Go early, and take the audio guide.
+- Jaswant Thada, right next to the fort
+- A walk through the blue lanes of the old city
+- Toorji ka Jhalra, the old stepwell
+- Umaid Bhawan Palace museum
+
+### Eat
+- Mirchi bada and pyaaz kachori, as hot as you can handle
+- Makhaniya lassi near the Clock Tower
+- A Rajasthani thali, with dal baati churma
+- A rooftop dinner facing the fort at sunset
+
+### Shop
+- Sardar Market at the Clock Tower
+- Bandhani and leheriya for the Maiyra
+- Mojaris, and spices to carry home
+</script>
+
+<script type="text/plain" id="note-details">
+# Wedding details
+
+**When:** 2nd and 3rd January 2027
+**Where:** Amritam Palace, Jodhpur
+**Stay:** on us
+
+| Date | Time | Occasion | Cloth theme |
+| 2 Jan ’27 | Morning | Haldi | Pastels, except blue |
+| 2 Jan ’27 | Evening | Sangeet & After Party | Glittery |
+| 3 Jan ’27 | Morning | Maiyra | Traditional colours |
+| 3 Jan ’27 | Evening | Phere | Whatever you like |
+</script>
+
+<script type="text/plain" id="note-photos">
+# Some photos of us
+
+![Oasis, 2018](photos/oasis-2018.jpg)
+![Jaipur, 2019](photos/jaipur-2019.jpg)
+
+![Nainital, 2020](photos/nainital-2020.jpg)
+![Nainital, on a boat](photos/nainital-2020-boat.jpg)
+</script>
 <div id="app" class="notes">
 
   <!-- Notes chrome -->
@@ -267,26 +361,23 @@ The stay is on us.
     <div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
     <h2>Pinned</h2>
     <ul class="notelist" id="sideList"></ul>
+    <footer class="madewith">Made with ❤️, when in ❤️</footer>
   </aside>
   <header class="topbar notes-only">
     <button class="icon-btn back" id="backBtn" aria-label="All notes"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Notes</button>
     <div class="right">
       <a class="icon-btn" id="calTop" target="_blank" rel="noopener" aria-label="Add the wedding to your calendar"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg></a>
-      <button class="icon-btn" id="shareBtn" aria-label="Copy the link to this letter"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg></button>
+      <button class="icon-btn" id="shareBtn" aria-label="Copy the link to this note"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg></button>
     </div>
   </header>
-  <nav class="toolbar notes-only" aria-label="Sections">
-    <button class="icon-btn tool" data-tool="story"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>Letter</button>
-    <button class="icon-btn tool" data-tool="photos"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M3.5 17l5-4.5 4 3.5 3-2.5 5 4"/></svg>Us</button>
-    <button class="icon-btn tool" data-tool="details"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h2M14 14h2M8 17h2"/></svg>2–3 Jan</button>
-    <a class="icon-btn tool" data-tool="map" href="https://www.google.com/maps/search/?api=1&query=Amritam+Palace+Jodhpur" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0119 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Jodhpur</a>
-    <button class="icon-btn tool" data-tool="reply"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9.5"/></svg>I'm coming</button>
-  </nav>
 
   <section class="listview notes-only" id="listView" hidden>
     <h2>Notes</h2>
     <ul class="notelist" id="phoneList"></ul>
+    <p class="count" id="noteCount"></p>
+    <footer class="madewith">Made with ❤️, when in ❤️</footer>
   </section>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <main id="main">
 
@@ -425,7 +516,7 @@ The stay is on us.
 
     <article class="view letter" id="v-wrong" hidden>
       <div class="stamp">Shared by Mudra · Edited 2 minutes ago</div>
-      <h1 class="title">Things Lakshay was wrong about</h1>
+      <h1 class="title">Things Lakshay got wrong</h1>
       <ul class="checks done-list">
         <li><span class="box"></span><span>How much food is "enough"</span></li>
         <li><span class="box"></span><span>That Applied Philosophy would be easy</span></li>
@@ -435,6 +526,30 @@ The stay is on us.
       </ul>
       <p class="aside">List continues. Eight years and counting.</p>
       <span class="mnote l"><b>L</b> I'd like to file an appeal.</span>
+    </article>
+
+    <article class="view letter" id="v-praises" hidden>
+      <div class="stamp">Shared by Lakshay</div>
+      <div class="letter" data-src="note-praises"></div>
+    </article>
+
+    <article class="view letter" id="v-jodhpur" hidden>
+      <div class="stamp">Shared by Mudra</div>
+      <div class="letter" data-src="note-jodhpur"></div>
+    </article>
+
+    <article class="view letter" id="v-details" hidden>
+      <div class="stamp">Pinned</div>
+      <div class="letter" data-src="note-details"></div>
+      <div class="cta">
+        <a class="btn-coming" href="#rsvp">I am coming</a>
+        <a class="link-cant" href="https://www.google.com/maps/search/?api=1&query=Amritam+Palace+Jodhpur" target="_blank" rel="noopener">Open Amritam Palace in Maps ↗</a>
+      </div>
+    </article>
+
+    <article class="view letter" id="v-photos" hidden>
+      <div class="stamp">2018 – 2020</div>
+      <div class="letter" data-src="note-photos"></div>
     </article>
 
   </main>
@@ -483,8 +598,8 @@ function inline(t){
 const WHO = { M: "Mudra", L: "Lakshay" };
 const SPECIAL = /^(#{1,3} |---$|\{\{RSVP\}\}$|-- |!\[|\[( |x)\] |[-*] |\||[ML]: )/i;
 let letterPreview = "";
-function renderLetter(src){
-  const out = []; let photosId = false, checksId = false, detailsNext = false;
+function renderLetter(src, el = $("#letterBody")){
+  const out = [], main = el.id === "letterBody";
   src.replace(/\r/g, "").trim().split(/\n\s*\n/).forEach(block => {
     const lines = block.split("\n").map(l => l.trim()).filter(Boolean).map(l => l.startsWith("* ") ? "- " + l.slice(2) : l);
     let i = 0, html = "";
@@ -503,19 +618,19 @@ function renderLetter(src){
       else if (l.startsWith("## ")){ html += `<p class="big r">${inline(l.slice(3))}</p>`; i++; }
       else if (l.startsWith("### ")){ html += `<p class="sub r">${inline(l.slice(4))}</p>`; i++; }
       else if (l === "---"){ html += "<hr>"; i++; }
-      else if (l === "{{RSVP}}"){ html += `<div class="cta r"><button class="btn-coming" id="comingBtn">I am coming</button><button class="link-cant" id="cantBtn">I really can't make it</button></div>`; detailsNext = true; i++; out.push(html); html = ""; continue; }
+      else if (l === "{{RSVP}}"){ html += `<div class="cta r"><button class="btn-coming" id="comingBtn">I am coming</button><button class="link-cant" id="cantBtn">I really can't make it</button></div>`; i++; out.push(html); html = ""; continue; }
       else if (l.startsWith("-- ")){ html += `<p class="sign r">${inline(l.slice(3))}</p>`; i++; }
       else if (l.startsWith("![")){
         const figs = [];
         while (i < lines.length && lines[i].startsWith("![")){ const m = /^!\[(.*?)\]\((.+?)\)/.exec(lines[i]); if (m) figs.push(m[2] === "TODO"
           ? `<figure class="photo"><div class="ph">Photo coming<br>${inline(m[1])}</div><figcaption>${inline(m[1])}</figcaption></figure>`
           : `<figure class="photo"><img src="${escH(m[2])}" alt="${escH(m[1])}" loading="lazy"><figcaption>${inline(m[1])}</figcaption></figure>`); i++; }
-        html += `<div class="photos r"${photosId ? "" : ' id="photos"'}>${figs.join("")}</div>`; photosId = true;
+        html += `<div class="photos r">${figs.join("")}</div>`;
       }
       else if (/^\[( |x)\] /i.test(l)){
         let items = "";
         while (i < lines.length && /^\[( |x)\] /i.test(lines[i])){ const t = inline(lines[i].slice(4)); i++; items += `<li class="r has-annot"><span class="box"></span><span>${annotate(t, getNotes())}</span></li>`; }
-        html += `<ul class="checks done-list"${checksId ? "" : ' id="checks"'}>${items}</ul>`; checksId = true;
+        html += `<ul class="checks done-list">${items}</ul>`;
       }
       else if (l.startsWith("|")){
         const rows = [];
@@ -532,18 +647,18 @@ function renderLetter(src){
       else {
         const para = [];
         while (i < lines.length && !SPECIAL.test(lines[i])){ para.push(inline(lines[i])); i++; }
-        if (!letterPreview && out.length) letterPreview = para.join(" ").replace(/<[^>]+>/g, "");
+        if (main && !letterPreview && out.length){ const d = document.createElement("div"); d.innerHTML = para.join(" "); letterPreview = d.textContent; }
         const ns = getNotes();
         if (ns.length) para[para.length - 1] = annotate(para[para.length - 1], ns);
         html += `<p class="lines r has-annot">${para.join("<br>")}</p>`;
       }
     }
-    if (detailsNext && html){ html = `<div id="details"></div>` + html; detailsNext = false; }
     out.push(html);
   });
-  $("#letterBody").innerHTML = out.join("");
+  el.innerHTML = out.join("");
 }
 renderLetter($("#letter-text").textContent);
+$$("[data-src]").forEach(el => renderLetter($("#" + el.dataset.src).textContent, el));
 function closeAnnots(except){ $$(".annot.open").forEach(a => { if (a !== except){ a.classList.remove("open"); a.setAttribute("aria-expanded", "false"); } }); }
 document.addEventListener("click", e => {
   const a = e.target.closest(".annot");
@@ -559,45 +674,79 @@ addEventListener("scroll", () => closeAnnots(), { passive: true });
 
 /* ---------- notes list ---------- */
 const NOTES = [
-  { id: "letter", t: () => `Dear ${toName || "friend"},`, d: "Today", s: letterPreview },
-  { id: "packing", t: () => "Jodhpur packing list", d: "Yesterday", s: "Something yellow you don't mind ruining" },
-  { id: "wrong", t: () => "Things Lakshay was wrong about", d: "2018", s: "How much food is \"enough\"" }
+  { id: "letter",  slug: "invite",            t: "Wedding Invite",           d: "Today",     s: `Dear ${toName || "friend"}, ${letterPreview}` },
+  { id: "packing", slug: "packing-list",      t: "Jodhpur packing list",     d: "Yesterday", s: "Something yellow you don't mind ruining" },
+  { id: "wrong",   slug: "lakshay-got-wrong", t: "Things Lakshay got wrong", d: "2018",      s: "How much food is \"enough\"" },
+  { id: "praises", slug: "praises-of-mudra",  t: "Praises of Mudra",         d: "2018",      s: "Lakshay is still writing this one" },
+  { id: "jodhpur", slug: "jodhpur",           t: "What to do in Jodhpur?",   d: "Last week", s: "Mehrangarh Fort. Go early." },
+  { id: "details", slug: "details",           t: "Wedding details",          d: "2–3 Jan",   s: "Amritam Palace, Jodhpur" },
+  { id: "photos",  slug: "photos",            t: "Some photos of us",        d: "2020",      s: "Oasis, Jaipur, Nainital" }
 ];
 function renderLists(active){
-  const html = NOTES.map(n => `<li><button data-note="${n.id}" aria-current="${n.id === active}"><div class="t">${n.t()}</div><div class="s"><b>${n.d}</b>${n.s}</div></button></li>`).join("");
+  const html = NOTES.map(n => `<li><button data-note="${n.slug}" aria-current="${n.id === active}"><div class="t">${escH(n.t)}</div><div class="s"><b>${n.d}</b>${escH(n.s)}</div></button></li>`).join("");
   $("#sideList").innerHTML = html; $("#phoneList").innerHTML = html;
-  $$("[data-note]").forEach(b => b.addEventListener("click", () => show(b.dataset.note)));
+  $("#noteCount").textContent = NOTES.length + " Notes";
+  $$("[data-note]").forEach(b => b.addEventListener("click", () => nav(b.dataset.note)));
 }
 
-/* ---------- views ---------- */
+/* ---------- views + URLs: every note has its own #link, and ?name= is kept ---------- */
+// home ("/") is the notes list; on desktop the sidebar is the list, so the invite opens beside it
+const ROUTES = { "": "list", "notes": "list", "rsvp": "reply", "cant-make-it": "cant", "done": "done" };
+NOTES.forEach(n => ROUTES[n.slug] = n.id);
+const wide = matchMedia("(min-width:900px)");
+const baseTitle = document.title;
 let current = "letter";
 function show(id, opts = {}){
   current = id;
   $$("#main > .view").forEach(v => v.hidden = v.id !== "v-" + id);
   $("#listView").hidden = true; $("#main").hidden = false; app.classList.remove("show-list");
-  renderLists(["letter", "packing", "wrong"].includes(id) ? id : "letter");
+  const note = NOTES.find(n => n.id === id);
+  renderLists(note ? id : "letter");
+  document.title = note && id !== "letter" ? `${note.t} · Mudra & Lakshay` : baseTitle;
   if (!opts.keepScroll) scrollTo({ top: 0, behavior: "auto" });
   requestAnimationFrame(() => { focusPass(); highlightPass(true); });
 }
-$("#backBtn").addEventListener("click", () => {
+function showList(){
+  renderLists(null);
   $("#main").hidden = true; $("#listView").hidden = false; app.classList.add("show-list"); scrollTo(0, 0);
+  document.title = baseTitle;
+}
+function setUrl(slug, replace){
+  const url = location.pathname + location.search + (slug ? "#" + slug : "");
+  if (url !== location.pathname + location.search + location.hash) history[replace ? "replaceState" : "pushState"](null, "", url);
+}
+function nav(slug){ setUrl(slug); route(); }
+function route(){
+  const id = ROUTES[decodeURIComponent(location.hash.slice(1))] || "list";
+  if (id === "reply" || id === "cant") return openReply(id === "cant");
+  if (id === "done"){ const p = lastReply(); return p ? done(p, true) : show("letter"); }
+  if (id === "list" && !wide.matches) return showList();
+  show(id === "list" ? "letter" : id);
+}
+addEventListener("popstate", route);
+document.addEventListener("click", e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (a && !e.metaKey && !e.ctrlKey){ e.preventDefault(); nav(a.getAttribute("href").slice(1)); }
 });
+$("#backBtn").addEventListener("click", () => nav(""));
 $("#shareBtn").addEventListener("click", async () => {
-  try { await navigator.clipboard.writeText(location.href); $("#shareBtn").style.opacity = .4; setTimeout(() => $("#shareBtn").style.opacity = 1, 600); } catch(e){}
+  const url = location.href, title = document.title;
+  if (navigator.share && matchMedia("(pointer:coarse)").matches){ try { await navigator.share({ title, url }); } catch(e){} return; }
+  try { await navigator.clipboard.writeText(url); toast("Link copied"); } catch(e){ toast("Couldn't copy. Copy it from the address bar."); }
 });
-$$("[data-tool]").forEach(b => b.addEventListener("click", () => {
-  const t = b.dataset.tool;
-  if (t === "reply") return openReply(false);
-  if (t === "map") return;
-  if (current !== "letter") show("letter");
-  const beh = reduced ? "auto" : "smooth";
-  setTimeout(() => {
-    if (t === "story") scrollTo({ top: 0, behavior: beh });
-    if (t === "photos" && $("#photos")) $("#photos").scrollIntoView({ behavior: beh, block: "center" });
-    if (t === "details") ($("#details") || $("#comingBtn")).scrollIntoView({ behavior: beh, block: "start" });
-  }, 30);
-}));
-$$(".checks.todo li").forEach(li => li.addEventListener("click", () => li.classList.toggle("ticked")));
+let toastT;
+function toast(msg){
+  const t = $("#toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 1800);
+}
+const ticks = new Set(JSON.parse(store.get("packing-ticks") || "[]"));
+$$(".checks.todo li").forEach((li, i) => {
+  li.classList.toggle("ticked", ticks.has(i));
+  li.addEventListener("click", () => {
+    ticks[li.classList.toggle("ticked") ? "add" : "delete"](i);
+    store.set("packing-ticks", JSON.stringify([...ticks]));
+  });
+});
 
 /* ---------- scroll: focus line + highlighter ---------- */
 function focusPass(){
@@ -705,7 +854,7 @@ function showStep(i){
 }
 function go(dir){
   const f = flow();
-  if (dir < 0 && si === 0) return show("letter");
+  if (dir < 0 && si === 0) return nav("invite");
   if (dir > 0){
     const e = validate(f[si]); if (e){ $("#err").textContent = e; return; }
     if (si >= f.length - 1) return submit();
@@ -723,8 +872,8 @@ function openReply(isCant){
   show("reply");
   showStep(0);
 }
-$("#comingBtn").addEventListener("click", () => openReply(false));
-$("#cantBtn").addEventListener("click", () => openReply(true));
+$("#comingBtn").addEventListener("click", () => nav("rsvp"));
+$("#cantBtn").addEventListener("click", () => nav("cant-make-it"));
 
 async function submit(){
   const v = s => $(s).value.trim();
@@ -747,6 +896,7 @@ async function submit(){
   }
   btn.disabled = false; paintNav();
   store.set("letter-reply", JSON.stringify(p));
+  setUrl("done", true);
   done(p, saved);
 }
 
@@ -776,12 +926,13 @@ function done(p, saved){
 }
 const nice = w => { const m = /^(\d{4})-(\d\d)-(\d\d) · (.*)$/.exec(w || ""); if (!m) return w; return new Date(+m[1], m[2] - 1, +m[3]).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) + ", " + m[4]; };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-$("#editReply").addEventListener("click", () => openReply(cant));
-$("#reread").addEventListener("click", () => show("letter"));
+$("#editReply").addEventListener("click", () => nav(cant ? "cant-make-it" : "rsvp"));
+$("#reread").addEventListener("click", () => nav("invite"));
 
 /* returning guest: refill their reply */
+function lastReply(){ try { return JSON.parse(store.get("letter-reply") || "null"); } catch(e){ return null; } }
 (function restore(){
-  let p; try { p = JSON.parse(store.get("letter-reply") || "null"); } catch(e){}
+  const p = lastReply();
   if (!p) return;
   $("#r-name").value = p.name || ""; $("#r-wa").value = p.whatsapp || ""; $("#r-notes").value = p.notes || "";
   if (p.side){ R.side = p.side; press("side", p.side); }
@@ -795,7 +946,10 @@ $("#reread").addEventListener("click", () => show("letter"));
   });
 })();
 
-show("letter");
+/* invited by name: start the form with it */
+if (toName && !$("#r-name").value) $("#r-name").value = toName;
+
+route();
 </script>
 </body>
 </html>
