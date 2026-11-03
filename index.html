@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A letter from Mudra & Lakshay. Jodhpur, 2–3 January 2027.">
+<meta property="og:title" content="A letter from Mudra & Lakshay">
+<meta property="og:description" content="You have a bigger responsibility than before.">
+<meta property="og:type" content="website">
+<title>Letter from Mudra & Lakshay</title>
+<style>
+/* Layout: an Apple Notes note. Sidebar of notes on desktop; top bar + bottom toolbar on phone. */
+:root{
+  color-scheme: light;
+  /* notes skin */
+  --n-bg:#ffffff; --n-ink:#1c1c1e; --n-grey:#8e8e93; --n-line:#e5e5ea; --n-side:#f2f2f7; --n-accent:#d9a400; --n-sel:#ffe27a;
+  /* shared */
+  --hl:rgba(255,222,0,.62);
+  --f-sys:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--f-sys);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--n-accent);outline-offset:2px}
+img{max-width:100%}
+
+/* =============== SHARED LETTER CONTENT =============== */
+.letter p,.letter li{margin:0}
+.view{display:block}
+.r{transition:opacity .35s ease}
+.hl{background-image:linear-gradient(100deg, transparent 0, var(--hl) 1.5%, var(--hl) 97%, transparent 100%);background-repeat:no-repeat;background-size:0% 78%;background-position:0 65%;transition:background-size 1.1s cubic-bezier(.6,.1,.2,1);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .12em;margin:0 -.06em;border-radius:3px}
+.hl.on{background-size:100% 78%}
+.even{list-style:none;padding:0}
+.checks{list-style:none;padding:0}
+.checks li{display:flex;gap:12px;align-items:flex-start}
+.box{flex:none;display:inline-grid;place-items:center}
+.photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;max-width:360px}
+.photos:has(.photo:only-child){max-width:200px}
+.photo .ph{aspect-ratio:4/5}
+.photo{margin:0;min-width:0}
+.ph{aspect-ratio:4/5;max-width:100%;display:grid;place-items:center;text-align:center;padding:12px;font-size:13px}
+.photo img{width:100%;height:auto;display:block}
+.cta{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.btn-coming{border:0;font-weight:700}
+.link-cant{background:none;border:0;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
+.ps-events{display:grid;gap:4px}
+
+/* step form (one question per screen) */
+.stepform{display:grid;gap:18px}
+.prog{height:4px;border-radius:4px;background:var(--track);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--acc);transition:width .35s ease}
+.step{display:none}
+.step.active{display:grid;gap:14px;animation:stepin .35s ease}
+@keyframes stepin{from{opacity:0;transform:translateY(12px)}}
+.qn{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.6}
+.qt{font-size:26px;line-height:1.2;font-weight:700;margin:0}
+.hint{opacity:.7;margin:0}
+.sass{font-style:italic;opacity:.8;margin:0}
+.field{font:inherit;font-size:18px;width:100%;color:inherit;padding:14px 16px;border-radius:12px;border:1.5px solid var(--fieldline);background:var(--fieldbg)}
+.field:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--accsoft)}
+textarea.field{min-height:120px;resize:vertical}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 16px;border-radius:12px;border:1.5px solid var(--fieldline);background:var(--fieldbg);font-size:17px;font-weight:500}
+.opt .dot{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--fieldline);display:grid;place-items:center}
+.opt.multi .dot{border-radius:6px}
+.opt[aria-pressed="true"]{border-color:var(--acc);background:var(--accsoft)}
+.opt[aria-pressed="true"] .dot{background:var(--acc);border-color:var(--acc)}
+.opt[aria-pressed="true"] .dot::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 14px;border-radius:999px;border:1.5px solid var(--fieldline);background:var(--fieldbg);font-size:15px}
+.chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:#fff}
+.substep{display:grid;gap:12px;padding-top:6px}
+.sublabel{font-weight:700;font-size:18px;margin:0}
+.navrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px}
+.navrow .back{background:none;border:0;padding:10px 4px;opacity:.7;font-size:16px}
+.navrow .next{margin-left:auto}
+.err{color:#d0021b;min-height:1.4em;margin:0;font-size:15px}
+.aside{opacity:.7;font-style:italic}
+
+/* =============== NOTES SKIN =============== */
+.notes{background:var(--n-bg);color:var(--n-ink);--acc:var(--n-accent);--accsoft:rgba(217,164,0,.14);--track:#ececf0;--fieldbg:#fff;--fieldline:#d1d1d6}
+.notes .topbar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+  padding:calc(8px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 8px max(8px,env(safe-area-inset-left,0px));
+  background:rgba(255,255,255,.86);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid transparent;transition:border-color .2s}
+.notes.scrolled .topbar{border-bottom-color:var(--n-line)}
+.icon-btn{background:none;border:0;padding:6px;display:inline-flex;align-items:center;gap:2px;color:var(--n-accent);font-size:17px}
+.tool{flex-direction:column;gap:3px;font-size:10.5px;font-weight:500;letter-spacing:.01em;min-width:56px;text-decoration:none}
+.icon-btn svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.topbar .right{display:flex;gap:4px}
+.notes .toolbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-around;
+  padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:rgba(249,249,249,.9);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-top:.5px solid var(--n-line)}
+.notes .sidebar{display:none}
+.notes main{padding:calc(64px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(110px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));max-width:720px;margin:0 auto}
+.notes .stamp{text-align:center;color:var(--n-grey);font-size:13px;margin-bottom:14px}
+.notes .letter{font-size:17px;line-height:1.5;display:grid;gap:16px}
+.notes .title{font-size:28px;font-weight:700;letter-spacing:-.01em;line-height:1.2;margin:0}
+.notes .big{font-size:22px;font-weight:700;line-height:1.3;margin-top:8px}
+.notes .even li{padding-left:18px;position:relative;margin-bottom:8px}
+.notes .even li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--n-ink)}
+.notes .even-h{font-weight:700;font-size:20px;margin-top:6px}
+.notes .checks li{margin-bottom:8px}
+.notes .box{width:22px;height:22px;border-radius:50%;background:var(--n-accent);margin-top:1px}
+.notes .box::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+.notes .checks.todo .box{background:transparent;border:1.5px solid #c7c7cc}
+.notes .checks.todo .box::after{display:none}
+.notes .checks.todo li.ticked .box{background:var(--n-accent);border-color:var(--n-accent)}
+.notes .checks.todo li.ticked .box::after{display:block}
+.notes .checks.todo li.ticked span:last-child{color:var(--n-grey);text-decoration:line-through}
+.notes .checks.todo li{cursor:pointer}
+.notes .ph{border-radius:12px;background:linear-gradient(135deg,#f2f2f7,#e5e5ea);color:var(--n-grey)}
+.notes .photo img{border-radius:12px}
+.notes .photo figcaption{font-size:13px;color:var(--n-grey);margin-top:6px}
+.notes .mnote{display:block;font-size:14px;color:var(--n-grey);margin-top:4px}
+.notes .mnote b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;color:#fff;font-size:11px;margin-right:6px;vertical-align:1px}
+.notes .mnote.m b{background:#ff2d55}.notes .mnote.l b{background:#007aff}
+/* Medium-style annotations */
+.has-annot{position:relative}
+.annot{cursor:pointer;border-radius:3px;-webkit-box-decoration-break:clone;box-decoration-break:clone;background-image:linear-gradient(transparent 62%, var(--ann) 62%);transition:background-color .2s;outline:none}
+.annot.m{--ann:rgba(255,45,85,.22);--ann-strong:rgba(255,45,85,.14)}
+.annot.l{--ann:rgba(0,122,255,.2);--ann-strong:rgba(0,122,255,.12)}
+.annot:hover,.annot.open,.annot:focus-visible{background-color:var(--ann-strong)}
+.av{display:inline-grid;place-items:center;flex:none;width:24px;height:24px;border-radius:50%;color:#fff;font-size:12px;font-weight:700;font-style:normal}
+.av.m{background:#ff2d55}.av.l{background:#007aff}
+.av.mini{width:17px;height:17px;font-size:9.5px;margin-left:6px;vertical-align:2px;box-shadow:0 0 0 2px #fff}
+.annot-pop{position:absolute;left:0;top:calc(100% + 10px);z-index:15;display:grid;gap:10px;width:max-content;max-width:min(320px,100%);background:#fff;color:var(--n-ink);border-radius:14px;padding:12px 14px;font-size:15px;line-height:1.4;
+  box-shadow:0 10px 30px rgba(0,0,0,.14),0 0 0 .5px rgba(0,0,0,.08);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .18s,transform .18s,visibility .18s}
+.annot-pop::before{content:"";position:absolute;top:-6px;left:22px;width:12px;height:12px;background:#fff;transform:rotate(45deg);box-shadow:-.5px -.5px 0 rgba(0,0,0,.08)}
+.pop-row{display:flex;gap:10px;align-items:flex-start}
+.pop-who{display:block;font-size:12px;font-weight:600;color:var(--n-grey);margin-bottom:1px}
+@media (hover:hover){.annot:hover + .annot-pop{opacity:1;visibility:visible;transform:none}}
+.annot.open + .annot-pop,.annot:focus-visible + .annot-pop{opacity:1;visibility:visible;transform:none}
+.notes s{text-decoration-thickness:1.5px}
+.notes .sign{font-weight:600}
+.notes .btn-coming{background:#1c1c1e;color:#fff;border-radius:14px;padding:14px 28px;font-size:17px}
+.notes .btn-coming:hover{background:#000}
+.notes .sub{font-weight:700;font-size:20px;margin-top:6px}
+#details{scroll-margin-top:84px}
+.notes .letter hr{border:0;border-top:.5px solid var(--n-line);margin:8px 0;width:100%}
+.notes .letter .lines{margin:0}
+.notes .letter ul.even{display:grid;gap:8px}
+.notes .letter ul.even li{margin:0}
+.notes .link-cant{color:var(--n-grey);font-size:15px}
+.notes .ps{border-top:.5px solid var(--n-line);padding-top:16px}
+.notes .ps-title{font-weight:700}
+.notes table{border-collapse:collapse;width:100%;font-size:15px}
+.notes td,.notes th{border:.5px solid var(--n-line);padding:8px 10px;vertical-align:top;text-align:left}
+.notes th{background:var(--n-side);font-weight:600;font-size:13px;color:#3a3a3c}
+.tbl{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+.tbl table{width:100%;table-layout:auto}
+.tbl td:first-child{white-space:nowrap}
+@media (max-width:480px){.notes .tbl td,.notes .tbl th{padding:7px 6px;font-size:13.5px;line-height:1.35}}
+/* list view (phone) + sidebar (desktop) */
+.notelist{list-style:none;margin:0;padding:0}
+.notelist button{display:block;width:100%;text-align:left;background:none;border:0;padding:12px 14px;border-radius:10px}
+.notelist .t{font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notelist .s{font-size:14px;color:var(--n-grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notelist .s b{color:var(--n-ink);font-weight:400;margin-right:6px}
+.notelist button[aria-current="true"]{background:var(--n-sel)}
+.notes .listview{padding:calc(64px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 120px max(12px,env(safe-area-inset-left,0px))}
+.notes .listview h2{font-size:34px;font-weight:700;margin:0 6px 12px}
+.notes .listview .notelist{background:#fff;border-radius:12px}
+.notes .listview .notelist li+li button{border-top:.5px solid var(--n-line);border-radius:0}
+.notes.show-list{background:var(--n-side)}
+@media (min-width:900px){
+  .notes .sidebar{display:block;position:fixed;top:0;bottom:0;left:0;width:300px;background:var(--n-side);border-right:.5px solid var(--n-line);padding:calc(18px + env(safe-area-inset-top,0px)) 10px 20px max(10px,env(safe-area-inset-left,0px));overflow:auto}
+  .notes .sidebar .dots{display:flex;gap:8px;padding:0 6px 18px}
+  .notes .sidebar .dots i{width:12px;height:12px;border-radius:50%}
+  .notes .sidebar h2{font-size:13px;color:var(--n-grey);font-weight:600;margin:0 14px 6px}
+  .notes .topbar{left:300px}
+  .notes .back{visibility:hidden}
+  .notes .toolbar{left:300px;top:0;bottom:auto;right:auto;width:auto;background:none;border:0;backdrop-filter:none;-webkit-backdrop-filter:none;padding:calc(8px + env(safe-area-inset-top,0px)) 0 0 20px;gap:4px;z-index:21}
+  .notes main{margin-left:300px;margin-right:0;max-width:none;padding-left:clamp(32px,6vw,96px);padding-right:clamp(32px,6vw,96px);padding-bottom:120px}
+  .notes main>.view{max-width:680px}
+  .notes .listview{display:none!important}
+}
+
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<!--
+================================================================
+  THE LETTER: edit the text between the two script tags below.
+  Save, refresh. That's it.
+
+  # Dear {name},        first line, the note's title. {name} becomes the guest's name (or "friend")
+  (empty line)          starts a new block
+  plain lines           each line shows on its own line; lines in one block stay together
+  ## Big line           large bold line
+  ### Heading           bold heading
+  - item                bullet
+  [x] item              ticked checklist item
+  M: text  /  L: text   a note from Mudra / Lakshay under the line above it
+  ==text==              yellow highlighter
+  ~~text~~              crossed out
+  **text**              bold
+  ![Caption](photos/x.jpg)   photo (put photo lines one after another to show them side by side)
+  ![Caption](TODO)      empty photo slot until the photo is ready
+  ---                   divider line
+  -- Mudra & Lakshay    signature
+  {{RSVP}}              the "I am coming" button
+================================================================
+-->
+<script type="text/plain" id="letter-text">
+# Dear {name},
+
+Your friends, ==Mudra & Lakshay are getting married== ❤️.
+
+We started this journey at BITS Pilani, when we were 19. A few know that it was an ==“experimental dating”==.
+
+![Oasis, 2018](photos/oasis-2018.jpg)
+
+At that time, they weren’t mature enough to understand what it takes to build a relationship.
+
+But, Mudra gave it time. It was very hard to be with Lakshay.
+M: Written by Mudra.
+
+![Us, fighting](TODO)
+
+## ==Cut to: 8 years later.==
+
+We are still in love & getting married.
+
+As you have been in our
+
+- Highs and lows
+- Trips and college sessions
+- Cafés and house parties
+
+this time, you need to play ==A VERY IMPORTANT ROLE==.
+
+You need to make sure we marry each other in ==Jodhpur==, on the ==2nd and 3rd of January 2027==, at ==Amritam Palace==.
+
+## ==WE CAN’T DO THIS WITHOUT YOU.==
+
+Awaiting your presence,
+Yours,
+
+-- Mudra & Lakshay
+
+{{RSVP}}
+
+---
+
+## P.S. The Details
+
+The stay is on us.
+
+**Venue:** Amritam Palace, Jodhpur
+
+**Dates & Occasions**
+
+| Date | Time | Occasion | Cloth theme |
+| 2 Jan ’27 | Morning | Haldi | Pastels, except blue |
+| 2 Jan ’27 | Evening | Sangeet & After Party | Glittery |
+| 3 Jan ’27 | Morning | Maiyra | Traditional colours |
+| 3 Jan ’27 | Evening | Phere | Whatever you like |
+</script>
+<div id="app" class="notes">
+
+  <!-- Notes chrome -->
+  <aside class="sidebar notes-only" aria-label="Notes">
+    <div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+    <h2>Pinned</h2>
+    <ul class="notelist" id="sideList"></ul>
+  </aside>
+  <header class="topbar notes-only">
+    <button class="icon-btn back" id="backBtn" aria-label="All notes"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Notes</button>
+    <div class="right">
+      <a class="icon-btn" id="calTop" target="_blank" rel="noopener" aria-label="Add the wedding to your calendar"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg></a>
+      <button class="icon-btn" id="shareBtn" aria-label="Copy the link to this letter"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg></button>
+    </div>
+  </header>
+  <nav class="toolbar notes-only" aria-label="Sections">
+    <button class="icon-btn tool" data-tool="story"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>Letter</button>
+    <button class="icon-btn tool" data-tool="photos"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M3.5 17l5-4.5 4 3.5 3-2.5 5 4"/></svg>Us</button>
+    <button class="icon-btn tool" data-tool="details"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h2M14 14h2M8 17h2"/></svg>2–3 Jan</button>
+    <a class="icon-btn tool" data-tool="map" href="https://www.google.com/maps/search/?api=1&query=Amritam+Palace+Jodhpur" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0119 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Jodhpur</a>
+    <button class="icon-btn tool" data-tool="reply"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9.5"/></svg>I'm coming</button>
+  </nav>
+
+  <section class="listview notes-only" id="listView" hidden>
+    <h2>Notes</h2>
+    <ul class="notelist" id="phoneList"></ul>
+  </section>
+
+  <main id="main">
+
+    <!-- ================= THE LETTER ================= -->
+    <article class="view letter" id="v-letter">
+      <div class="stamp" id="stamp"></div>
+      <div class="letter" id="letterBody"></div>
+    </article>
+
+    <!-- ================= REPLY (one question per screen) ================= -->
+    <article class="view" id="v-reply" hidden>
+      <form id="replyForm" class="stepform" novalidate>
+        <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
+
+        <div class="step" data-step="name">
+          <p class="qn" data-count></p>
+          <label class="qt" for="r-name">What's your full name?</label>
+          <input class="field" id="r-name" autocomplete="name" placeholder="Full name">
+        </div>
+
+
+        <div class="step" data-step="whatsapp">
+          <p class="qn" data-count></p>
+          <label class="qt" for="r-wa">What's your WhatsApp number?</label>
+          <input class="field" id="r-wa" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210">
+        </div>
+
+        <div class="step" data-step="side">
+          <p class="qn" data-count></p>
+          <p class="qt">Are you coming from the groom's side or the bride's side?</p>
+          <div class="opts" data-k="side">
+            <button type="button" class="opt" data-v="Groom's side"><span class="dot"></span>Groom's side</button>
+            <button type="button" class="opt" data-v="Bride's side"><span class="dot"></span>Bride's side</button>
+          </div>
+          <p class="sass">If you think you're coming from both, choose groom because it's obvious, baby.</p>
+        </div>
+
+        <div class="step" data-step="attendance">
+          <p class="qn" data-count></p>
+          <p class="qt">Will we see you for all four events?</p>
+          <div class="opts" data-k="attendance">
+            <button type="button" class="opt" data-v="All four"><span class="dot"></span>Yes, there for all of it!</button>
+            <button type="button" class="opt" data-v="Missing a bit"><span class="dot"></span>I'll be there, but will miss a bit</button>
+            <button type="button" class="opt" data-v="Can't make it"><span class="dot"></span>Sadly, can't make it</button>
+          </div>
+          <div class="substep" id="missWrap" hidden>
+            <p class="sublabel">Which part will you miss?</p>
+            <div class="opts" data-k="missing" data-multi="1">
+              <button type="button" class="opt multi" data-v="Haldi"><span class="dot"></span>Haldi · 2 Jan, morning</button>
+              <button type="button" class="opt multi" data-v="Sangeet"><span class="dot"></span>Sangeet & After Party · 2 Jan, evening</button>
+              <button type="button" class="opt multi" data-v="Maiyra"><span class="dot"></span>Maiyra · 3 Jan, morning</button>
+              <button type="button" class="opt multi" data-v="Phere"><span class="dot"></span>Phere · 3 Jan, evening</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="step" data-step="partner">
+          <p class="qn" data-count></p>
+          <p class="qt">Is your partner joining us?</p>
+          <div class="opts" data-k="partner">
+            <button type="button" class="opt" data-v="Yes"><span class="dot"></span>Yes, we're both coming</button>
+            <button type="button" class="opt" data-v="No"><span class="dot"></span>No, just me</button>
+          </div>
+          <div class="substep" id="partnerWrap" hidden>
+            <label class="sublabel" for="r-partner">What's your partner's full name?</label>
+            <input class="field" id="r-partner" placeholder="Partner's full name">
+          </div>
+        </div>
+
+        <div class="step" data-step="city">
+          <p class="qn" data-count></p>
+          <label class="qt" for="r-city">Which city are you travelling from?</label>
+          <input class="field" id="r-city" autocomplete="address-level2" placeholder="City">
+        </div>
+
+        <div class="step" data-step="arrival">
+          <p class="qn" data-count></p>
+          <p class="qt">When will you arrive?</p>
+          <input class="field" id="r-arr" type="date" min="2026-12-28" max="2027-01-03" aria-label="Arrival date">
+          <div class="chips" data-k="arr_t" aria-label="Approximate arrival time"><button type="button" class="chip" data-v="early morning">Early morning</button><button type="button" class="chip" data-v="morning">Morning</button><button type="button" class="chip" data-v="afternoon">Afternoon</button><button type="button" class="chip" data-v="evening">Evening</button><button type="button" class="chip" data-v="late night">Late night</button></div>
+          <button type="button" class="opt multi" id="r-arr-u" aria-pressed="false"><span class="dot"></span>Not decided yet</button>
+        </div>
+
+        <div class="step" data-step="departure">
+          <p class="qn" data-count></p>
+          <p class="qt">When will you leave?</p>
+          <input class="field" id="r-dep" type="date" min="2027-01-02" max="2027-01-07" aria-label="Departure date">
+          <div class="chips" data-k="dep_t" aria-label="Approximate departure time"><button type="button" class="chip" data-v="early morning">Early morning</button><button type="button" class="chip" data-v="morning">Morning</button><button type="button" class="chip" data-v="afternoon">Afternoon</button><button type="button" class="chip" data-v="evening">Evening</button><button type="button" class="chip" data-v="late night">Late night</button></div>
+          <button type="button" class="opt multi" id="r-dep-u" aria-pressed="false"><span class="dot"></span>Not decided yet</button>
+        </div>
+
+        <div class="step" data-step="notes">
+          <p class="qn" data-count></p>
+          <label class="qt" for="r-notes" id="notesQ">Anything else we should know?</label>
+          <p class="hint" id="notesHint">Optional. Mention here if your partner's arrival or departure is different.</p>
+          <textarea class="field" id="r-notes" placeholder="Optional"></textarea>
+        </div>
+
+        <p class="err" id="err" role="alert"></p>
+        <div class="navrow">
+          <button type="button" class="back" id="stepBack">← Back</button>
+          <button type="submit" class="btn-coming next" id="sendBtn">Next</button>
+        </div>
+      </form>
+    </article>
+
+    <!-- ================= DONE ================= -->
+    <article class="view letter" id="v-done" hidden>
+      <h1 class="title" id="doneTitle">Responsibility accepted.</h1>
+      <p class="big" id="doneBig"></p>
+      <p id="doneText"></p>
+      <ul class="checks done-list" id="doneList"></ul>
+      <p class="aside" id="previewNote" hidden>Preview mode: replies aren't sent to the Google Sheet from a local preview.</p>
+      <div class="cta">
+        <a class="btn-coming" id="calLink" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Add to calendar</a>
+        <button class="link-cant" id="editReply">Change my reply</button>
+        <button class="link-cant" id="reread">Read the letter again</button>
+      </div>
+    </article>
+
+    <!-- ================= SIDE NOTES (notes skin) ================= -->
+    <article class="view letter" id="v-packing" hidden>
+      <div class="stamp">Shared by Mudra</div>
+      <h1 class="title">Jodhpur packing list</h1>
+      <p class="aside">Tap to tick.</p>
+      <ul class="checks todo">
+        <li><span class="box"></span><span>Something yellow you don't mind ruining (Haldi)</span></li>
+        <li><span class="box"></span><span>Your loudest outfit and shoes you can dance in (Sangeet)</span></li>
+        <li><span class="box"></span><span>Leheriya, bandhani, pinks (Maiyra)</span></li>
+        <li><span class="box"></span><span>Your absolute best (Wedding)</span></li>
+        <li><span class="box"></span><span>A shawl or jacket. January nights in Jodhpur are cold.</span></li>
+        <li><span class="box"></span><span>ID for check-in</span></li>
+        <li><span class="box"></span><span>Appetite. Mudra will over-order.</span></li>
+      </ul>
+    </article>
+
+    <article class="view letter" id="v-wrong" hidden>
+      <div class="stamp">Shared by Mudra · Edited 2 minutes ago</div>
+      <h1 class="title">Things Lakshay was wrong about</h1>
+      <ul class="checks done-list">
+        <li><span class="box"></span><span>How much food is "enough"</span></li>
+        <li><span class="box"></span><span>That Applied Philosophy would be easy</span></li>
+        <li><span class="box"></span><span>The shortcut</span></li>
+        <li><span class="box"></span><span>The other shortcut</span></li>
+        <li><span class="box"></span><span>"I'm not irritating you"</span></li>
+      </ul>
+      <p class="aside">List continues. Eight years and counting.</p>
+      <span class="mnote l"><b>L</b> I'd like to file an appeal.</span>
+    </article>
+
+  </main>
+
+</div>
+
+<script>
+/* ================= EDIT HERE ================= */
+const CONFIG = {
+  sheetUrl: "https://script.google.com/macros/s/AKfycbxWgVs7sLBNMMnzrjOnfK0wCUbMRN9XRF53NP_jEd7qRcn6dmBsJ-Ry4dF8Tig7l-x4/exec"
+  // Sheet: https://docs.google.com/spreadsheets/d/1gWplNLtD7InVpQAH5L8th1c_hUuHk1VHPSADstBOFGo/edit
+};
+// local testing never sends rows
+const PREVIEW = location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$|\.localhost$|claude\.ai$|claudeusercontent\.com$/.test(location.hostname);
+/* ============================================= */
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const store = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(k, v); } catch(e){} } };
+const app = $("#app");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- personalisation: ?to=Rohan&call=Bhai ---------- */
+const params = new URLSearchParams(location.search);
+const toName = (params.get("to") || params.get("name") || "").trim().slice(0, 40);
+if (toName){ $$(".to-name").forEach(e => e.textContent = toName); $("#r-name").placeholder = toName + " (full name)"; }
+
+/* ---------- dates ---------- */
+const fmt = d => d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+$("#stamp").textContent = fmt(new Date());
+
+const CAL = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent("Mudra & Lakshay's wedding") +
+  "&dates=20270102/20270104&location=" + encodeURIComponent("Amritam Palace, Jodhpur") +
+  "&details=" + encodeURIComponent("Haldi & Sangeet on 2 Jan. Maiyra & Wedding on 3 Jan. It's your responsibility.");
+$("#calTop").href = CAL;
+
+/* ---------- render the letter from the plain-text block ---------- */
+const escH = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function inline(t){
+  return escH(t)
+    .replace(/\{name\}/g, `<span class="to-name">${escH(toName || "friend")}</span>`)
+    .replace(/==(.+?)==/g, '<span class="hl">$1</span>')
+    .replace(/~~(.+?)~~/g, "<s>$1</s>")
+    .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+}
+const WHO = { M: "Mudra", L: "Lakshay" };
+const SPECIAL = /^(#{1,3} |---$|\{\{RSVP\}\}$|-- |!\[|\[( |x)\] |[-*] |\||[ML]: )/i;
+let letterPreview = "";
+function renderLetter(src){
+  const out = []; let photosId = false, checksId = false, detailsNext = false;
+  src.replace(/\r/g, "").trim().split(/\n\s*\n/).forEach(block => {
+    const lines = block.split("\n").map(l => l.trim()).filter(Boolean).map(l => l.startsWith("* ") ? "- " + l.slice(2) : l);
+    let i = 0, html = "";
+    const getNotes = () => { const a = []; while (i < lines.length && /^[ML]: /.test(lines[i])){ a.push({ w: lines[i][0], t: inline(lines[i].slice(3)) }); i++; } return a; };
+    const notes = () => getNotes().map(n => `<span class="mnote ${n.w.toLowerCase()}"><b>${n.w}</b> ${n.t}</span>`).join("");
+    // Medium-style: the annotated sentence is tinted with a tiny avatar; hover / tap shows the note card
+    const annotate = (t, ns) => {
+      if (!ns.length) return t;
+      const w = ns[0].w.toLowerCase(), who = WHO[ns[0].w];
+      const rows = ns.map(n => `<span class="pop-row"><b class="av ${n.w.toLowerCase()}">${n.w}</b><span><span class="pop-who">${WHO[n.w]}</span>${n.t}</span></span>`).join("");
+      return `<span class="annot ${w}" tabindex="0" role="button" aria-expanded="false" aria-label="${who} left a note on this line">${t}<b class="av mini ${w}" aria-hidden="true">${ns[0].w}</b></span><span class="annot-pop" role="note">${rows}</span>`;
+    };
+    while (i < lines.length){
+      const l = lines[i];
+      if (l.startsWith("# ")){ html += `<h1 class="title r">${inline(l.slice(2))}</h1>`; i++; }
+      else if (l.startsWith("## ")){ html += `<p class="big r">${inline(l.slice(3))}</p>`; i++; }
+      else if (l.startsWith("### ")){ html += `<p class="sub r">${inline(l.slice(4))}</p>`; i++; }
+      else if (l === "---"){ html += "<hr>"; i++; }
+      else if (l === "{{RSVP}}"){ html += `<div class="cta r"><button class="btn-coming" id="comingBtn">I am coming</button><button class="link-cant" id="cantBtn">I really can't make it</button></div>`; detailsNext = true; i++; out.push(html); html = ""; continue; }
+      else if (l.startsWith("-- ")){ html += `<p class="sign r">${inline(l.slice(3))}</p>`; i++; }
+      else if (l.startsWith("![")){
+        const figs = [];
+        while (i < lines.length && lines[i].startsWith("![")){ const m = /^!\[(.*?)\]\((.+?)\)/.exec(lines[i]); if (m) figs.push(m[2] === "TODO"
+          ? `<figure class="photo"><div class="ph">Photo coming<br>${inline(m[1])}</div><figcaption>${inline(m[1])}</figcaption></figure>`
+          : `<figure class="photo"><img src="${escH(m[2])}" alt="${escH(m[1])}" loading="lazy"><figcaption>${inline(m[1])}</figcaption></figure>`); i++; }
+        html += `<div class="photos r"${photosId ? "" : ' id="photos"'}>${figs.join("")}</div>`; photosId = true;
+      }
+      else if (/^\[( |x)\] /i.test(l)){
+        let items = "";
+        while (i < lines.length && /^\[( |x)\] /i.test(lines[i])){ const t = inline(lines[i].slice(4)); i++; items += `<li class="r has-annot"><span class="box"></span><span>${annotate(t, getNotes())}</span></li>`; }
+        html += `<ul class="checks done-list"${checksId ? "" : ' id="checks"'}>${items}</ul>`; checksId = true;
+      }
+      else if (l.startsWith("|")){
+        const rows = [];
+        while (i < lines.length && lines[i].startsWith("|")){ const cells = lines[i].replace(/^\||\|$/g, "").split("|").map(c => c.trim()); if (!cells.every(c => /^:?-{2,}:?$/.test(c))) rows.push(cells); i++; }
+        const [hd, ...bd] = rows;
+        html += `<div class="tbl r"><table><thead><tr>${hd.map(c => `<th>${inline(c)}</th>`).join("")}</tr></thead><tbody>${bd.map(r => `<tr>${r.map(c => `<td>${inline(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+      }
+      else if (l.startsWith("- ")){
+        let items = "";
+        while (i < lines.length && lines[i].startsWith("- ")){ const t = inline(lines[i].slice(2)); i++; items += `<li class="r has-annot">${annotate(t, getNotes())}</li>`; }
+        html += `<ul class="even">${items}</ul>`;
+      }
+      else if (/^[ML]: /.test(l)){ html += notes(); }
+      else {
+        const para = [];
+        while (i < lines.length && !SPECIAL.test(lines[i])){ para.push(inline(lines[i])); i++; }
+        if (!letterPreview && out.length) letterPreview = para.join(" ").replace(/<[^>]+>/g, "");
+        const ns = getNotes();
+        if (ns.length) para[para.length - 1] = annotate(para[para.length - 1], ns);
+        html += `<p class="lines r has-annot">${para.join("<br>")}</p>`;
+      }
+    }
+    if (detailsNext && html){ html = `<div id="details"></div>` + html; detailsNext = false; }
+    out.push(html);
+  });
+  $("#letterBody").innerHTML = out.join("");
+}
+renderLetter($("#letter-text").textContent);
+function closeAnnots(except){ $$(".annot.open").forEach(a => { if (a !== except){ a.classList.remove("open"); a.setAttribute("aria-expanded", "false"); } }); }
+document.addEventListener("click", e => {
+  const a = e.target.closest(".annot");
+  closeAnnots(a);
+  if (a){ const on = a.classList.toggle("open"); a.setAttribute("aria-expanded", on); }
+});
+document.addEventListener("keydown", e => {
+  const a = e.target.closest && e.target.closest(".annot");
+  if (a && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); a.click(); }
+  if (e.key === "Escape") closeAnnots();
+});
+addEventListener("scroll", () => closeAnnots(), { passive: true });
+
+/* ---------- notes list ---------- */
+const NOTES = [
+  { id: "letter", t: () => `Dear ${toName || "friend"},`, d: "Today", s: letterPreview },
+  { id: "packing", t: () => "Jodhpur packing list", d: "Yesterday", s: "Something yellow you don't mind ruining" },
+  { id: "wrong", t: () => "Things Lakshay was wrong about", d: "2018", s: "How much food is \"enough\"" }
+];
+function renderLists(active){
+  const html = NOTES.map(n => `<li><button data-note="${n.id}" aria-current="${n.id === active}"><div class="t">${n.t()}</div><div class="s"><b>${n.d}</b>${n.s}</div></button></li>`).join("");
+  $("#sideList").innerHTML = html; $("#phoneList").innerHTML = html;
+  $$("[data-note]").forEach(b => b.addEventListener("click", () => show(b.dataset.note)));
+}
+
+/* ---------- views ---------- */
+let current = "letter";
+function show(id, opts = {}){
+  current = id;
+  $$("#main > .view").forEach(v => v.hidden = v.id !== "v-" + id);
+  $("#listView").hidden = true; $("#main").hidden = false; app.classList.remove("show-list");
+  renderLists(["letter", "packing", "wrong"].includes(id) ? id : "letter");
+  if (!opts.keepScroll) scrollTo({ top: 0, behavior: "auto" });
+  requestAnimationFrame(() => { focusPass(); highlightPass(true); });
+}
+$("#backBtn").addEventListener("click", () => {
+  $("#main").hidden = true; $("#listView").hidden = false; app.classList.add("show-list"); scrollTo(0, 0);
+});
+$("#shareBtn").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(location.href); $("#shareBtn").style.opacity = .4; setTimeout(() => $("#shareBtn").style.opacity = 1, 600); } catch(e){}
+});
+$$("[data-tool]").forEach(b => b.addEventListener("click", () => {
+  const t = b.dataset.tool;
+  if (t === "reply") return openReply(false);
+  if (t === "map") return;
+  if (current !== "letter") show("letter");
+  const beh = reduced ? "auto" : "smooth";
+  setTimeout(() => {
+    if (t === "story") scrollTo({ top: 0, behavior: beh });
+    if (t === "photos" && $("#photos")) $("#photos").scrollIntoView({ behavior: beh, block: "center" });
+    if (t === "details") ($("#details") || $("#comingBtn")).scrollIntoView({ behavior: beh, block: "start" });
+  }, 30);
+}));
+$$(".checks.todo li").forEach(li => li.addEventListener("click", () => li.classList.toggle("ticked")));
+
+/* ---------- scroll: focus line + highlighter ---------- */
+function focusPass(){
+  const vh = innerHeight, mid = vh * (scrollY < vh * 0.3 ? 0.36 : 0.5), band = vh * 0.22;
+  $$(".view:not([hidden]) .r").forEach(el => {
+    if (reduced){ el.style.opacity = 1; return; }
+    const r = el.getBoundingClientRect();
+    const c = Math.min(Math.max(mid, r.top), r.bottom);      // nearest point of element to centre
+    const d = Math.max(0, Math.abs(c - mid) - band) / (vh * 0.3);
+    el.style.opacity = Math.max(0.22, 1 - d * 0.78).toFixed(3);
+  });
+}
+function highlightPass(){
+  $$(".view:not([hidden]) .hl:not(.on)").forEach(h => {
+    const r = h.getBoundingClientRect();
+    if (r.top < innerHeight * 0.62 && r.bottom > 0) h.classList.add("on");
+  });
+}
+let ticking = false;
+addEventListener("scroll", () => {
+  app.classList.toggle("scrolled", scrollY > 4);
+  if (!ticking){ ticking = true; requestAnimationFrame(() => { focusPass(); highlightPass(); ticking = false; }); }
+}, { passive: true });
+addEventListener("resize", focusPass);
+
+/* ================= REPLY ================= */
+const R = { side: "", attendance: "", missing: [], partner: "", arr_t: "", dep_t: "", arr_u: false, dep_u: false };
+let cant = false, si = 0;
+const stepEl = k => $(`.step[data-step="${k}"]`);
+function flow(){
+  if (cant) return ["name", "whatsapp", "side", "notes"];
+  const base = ["name", "whatsapp", "side", "attendance"];
+  if (R.attendance === "Can't make it") return base;
+  return base.concat(["partner", "city", "arrival", "departure", "notes"]);
+}
+function press(k, v, on = true){ const b = $(`[data-k="${k}"] [data-v="${CSS.escape(v)}"]`); if (b) b.setAttribute("aria-pressed", on); }
+
+$$("#replyForm [data-k]").forEach(g => {
+  const k = g.dataset.k, multi = !!g.dataset.multi;
+  $$("button", g).forEach(b => {
+    b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", () => {
+      if (multi){ b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true"); R[k] = $$("button[aria-pressed=true]", g).map(x => x.dataset.v); }
+      else { $$("button", g).forEach(x => x.setAttribute("aria-pressed", x === b)); R[k] = b.dataset.v; }
+      $("#err").textContent = "";
+      if (k === "arr_t" || k === "dep_t") setUndec(k.slice(0, 3), false);
+      if (k === "attendance"){
+        $("#missWrap").hidden = R.attendance !== "Missing a bit";
+        if (R.attendance !== "Missing a bit"){ R.missing = []; $$('[data-k="missing"] button').forEach(x => x.setAttribute("aria-pressed", "false")); }
+      }
+      if (k === "partner"){ $("#partnerWrap").hidden = R.partner !== "Yes"; if (R.partner === "Yes") setTimeout(() => $("#r-partner").focus(), 60); }
+      paintNav();
+      const auto = k === "side" || (k === "attendance" && R.attendance === "All four") || (k === "partner" && R.partner === "No");
+      if (auto) setTimeout(() => go(1), 260);
+    });
+  });
+});
+function setUndec(w, on){
+  R[w + "_u"] = on; $(`#r-${w}-u`).setAttribute("aria-pressed", on);
+  if (on){ $(`#r-${w}`).value = ""; R[w + "_t"] = ""; $$(`[data-k="${w}_t"] button`).forEach(x => x.setAttribute("aria-pressed", "false")); }
+}
+["arr", "dep"].forEach(w => {
+  $(`#r-${w}-u`).addEventListener("click", () => { setUndec(w, !R[w + "_u"]); $("#err").textContent = ""; });
+  $(`#r-${w}`).addEventListener("input", () => setUndec(w, false));
+});
+
+function validate(k){
+  const v = s => $(s).value.trim();
+  switch (k){
+    case "name": return v("#r-name").length > 1 ? "" : "Tell us your full name.";
+    case "whatsapp": return v("#r-wa").replace(/\D/g, "").length >= 10 ? "" : "That number looks short. Add the country code if you're outside India.";
+    case "side": return R.side ? "" : "Pick a side. (Groom, obviously.)";
+    case "attendance":
+      if (!R.attendance) return "Pick one.";
+      if (R.attendance === "Missing a bit" && !R.missing.length) return "Tap the event(s) you'll miss.";
+      return "";
+    case "partner":
+      if (!R.partner) return "Yes or no?";
+      if (R.partner === "Yes" && v("#r-partner").length < 2) return "What's your partner's full name?";
+      return "";
+    case "city": return v("#r-city").length > 1 ? "" : "Which city are you coming from?";
+    case "arrival": return R.arr_u || (v("#r-arr") && R.arr_t) ? "" : "Pick a date and a rough time, or tap Not decided yet.";
+    case "departure":
+      if (!(R.dep_u || (v("#r-dep") && R.dep_t))) return "Pick a date and a rough time, or tap Not decided yet.";
+      if (!R.dep_u && !R.arr_u && v("#r-dep") < v("#r-arr")) return "You're leaving before you arrive? Check the dates.";
+      return "";
+  }
+  return "";
+}
+function paintNav(){
+  const f = flow(), last = si >= f.length - 1;
+  $("#sendBtn").textContent = last ? (cant || R.attendance === "Can't make it" ? "Send" : "Send RSVP") : "Next";
+  $("#stepBack").textContent = si === 0 ? "← The letter" : "← Back";
+}
+function showStep(i){
+  const f = flow(); si = Math.max(0, Math.min(i, f.length - 1));
+  $$(".step").forEach(el => el.classList.toggle("active", el.dataset.step === f[si]));
+  const el = stepEl(f[si]);
+  $(".qn", el).textContent = `${si + 1} of ${f.length}`;
+  $("#progBar").style.width = `${((si + 1) / f.length) * 100}%`;
+  $("#err").textContent = "";
+  paintNav();
+  const inp = $("input.field:not([type=date]), textarea.field", el);
+  if (inp && !inp.closest("[hidden]")) setTimeout(() => inp.focus({ preventScroll: true }), 80);
+}
+function go(dir){
+  const f = flow();
+  if (dir < 0 && si === 0) return show("letter");
+  if (dir > 0){
+    const e = validate(f[si]); if (e){ $("#err").textContent = e; return; }
+    if (si >= f.length - 1) return submit();
+  }
+  showStep(si + dir);
+  scrollTo({ top: 0, behavior: "auto" });
+}
+$("#replyForm").addEventListener("submit", e => { e.preventDefault(); go(1); });
+$("#stepBack").addEventListener("click", () => go(-1));
+
+function openReply(isCant){
+  cant = isCant;
+  $("#notesQ").textContent = cant ? "Anything you'd like to tell us?" : "Anything else we should know?";
+  $("#notesHint").textContent = cant ? "Optional." : "Optional. Mention here if your partner's arrival or departure is different.";
+  show("reply");
+  showStep(0);
+}
+$("#comingBtn").addEventListener("click", () => openReply(false));
+$("#cantBtn").addEventListener("click", () => openReply(true));
+
+async function submit(){
+  const v = s => $(s).value.trim();
+  const isCant = cant || R.attendance === "Can't make it";
+  const when = w => R[w + "_u"] ? "Not decided yet" : `${v("#r-" + w)} · ${R[w + "_t"]}`;
+  const p = {
+    name: v("#r-name"), whatsapp: v("#r-wa"), side: R.side,
+    attendance: isCant ? "Can't make it" : R.attendance,
+    missing_events: !isCant && R.attendance === "Missing a bit" ? R.missing.join(", ") : "",
+    partner_joining: isCant ? "" : R.partner, partner_name: !isCant && R.partner === "Yes" ? v("#r-partner") : "",
+    guests: isCant ? 0 : (R.partner === "Yes" ? 2 : 1),
+    city: isCant ? "" : v("#r-city"), arrival: isCant ? "" : when("arr"), departure: isCant ? "" : when("dep"),
+    notes: isCant && !cant ? "" : v("#r-notes"), invited_as: toName, submitted_at: new Date().toISOString()
+  };
+  const btn = $("#sendBtn"); btn.disabled = true; btn.textContent = "Sending…";
+  let saved = false;
+  if (CONFIG.sheetUrl && !PREVIEW){
+    try { await fetch(CONFIG.sheetUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(p) }); saved = true; }
+    catch(err){ btn.disabled = false; paintNav(); $("#err").textContent = "Couldn't send. Check your internet and try again."; return; }
+  }
+  btn.disabled = false; paintNav();
+  store.set("letter-reply", JSON.stringify(p));
+  done(p, saved);
+}
+
+function done(p, saved){
+  const first = p.name.split(" ")[0];
+  const isCant = p.attendance === "Can't make it";
+  const addr = first;
+  $("#doneTitle").textContent = isCant ? "We'll miss you." : "Responsibility accepted.";
+  $("#doneBig").innerHTML = isCant ? `Thank you for telling us, ${esc(first)}.`
+    : `${esc(addr)}, it's official. If we don't get married on <span class="hl">3rd January</span>, it's on you.`;
+  $("#doneText").textContent = isCant ? "We'll send you the photos, the films, and probably some sweets. You're still part of this."
+    : (p.partner_name ? `You and ${p.partner_name.split(" ")[0]} are on the list, and your stay is on us. We'll message you on WhatsApp with everything else.`
+                      : "You're on the list and your stay is on us. We'll message you on WhatsApp with everything else.");
+  const items = isCant ? [] : [
+    `From the ${p.side.toLowerCase()}`,
+    p.attendance === "All four" ? "Here for all four events" : `Missing: ${p.missing_events}`,
+    p.partner_name ? `Bringing ${p.partner_name}` : "Coming solo",
+    `Arriving: ${nice(p.arrival)}`, `Leaving: ${nice(p.departure)}`
+  ];
+  $("#doneList").innerHTML = items.map(t => `<li><span class="box"></span><span>${esc(t)}</span></li>`).join("");
+  $("#calLink").hidden = isCant;
+  $("#calLink").href = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent("Mudra & Lakshay's wedding") +
+    "&dates=20270102/20270104&location=" + encodeURIComponent("Amritam Palace, Jodhpur") +
+    "&details=" + encodeURIComponent("Haldi & Sangeet on 2 Jan. Maiyra & Wedding on 3 Jan. It's your responsibility.");
+  $("#previewNote").hidden = saved;
+  show("done");
+}
+const nice = w => { const m = /^(\d{4})-(\d\d)-(\d\d) · (.*)$/.exec(w || ""); if (!m) return w; return new Date(+m[1], m[2] - 1, +m[3]).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) + ", " + m[4]; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+$("#editReply").addEventListener("click", () => openReply(cant));
+$("#reread").addEventListener("click", () => show("letter"));
+
+/* returning guest: refill their reply */
+(function restore(){
+  let p; try { p = JSON.parse(store.get("letter-reply") || "null"); } catch(e){}
+  if (!p) return;
+  $("#r-name").value = p.name || ""; $("#r-wa").value = p.whatsapp || ""; $("#r-notes").value = p.notes || "";
+  if (p.side){ R.side = p.side; press("side", p.side); }
+  if (p.attendance){ R.attendance = p.attendance; press("attendance", p.attendance); $("#missWrap").hidden = p.attendance !== "Missing a bit"; }
+  if (p.missing_events){ R.missing = p.missing_events.split(", "); R.missing.forEach(m => press("missing", m)); }
+  if (p.partner_joining){ R.partner = p.partner_joining; press("partner", p.partner_joining); $("#partnerWrap").hidden = p.partner_joining !== "Yes"; $("#r-partner").value = p.partner_name || ""; }
+  $("#r-city").value = p.city || "";
+  [["arr", p.arrival], ["dep", p.departure]].forEach(([w, val]) => {
+    if (val === "Not decided yet") setUndec(w, true);
+    else if (val && val.includes(" · ")){ const [d, t] = val.split(" · "); $(`#r-${w}`).value = d; R[w + "_t"] = t; press(w + "_t", t); }
+  });
+})();
+
+show("letter");
+</script>
+</body>
+</html>
