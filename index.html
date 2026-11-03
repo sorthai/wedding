@@ -255,6 +255,30 @@ a.link-cant:hover{text-decoration:underline}
 @keyframes viewin{from{opacity:0;transform:translateX(18px)}}
 @keyframes listin{from{opacity:0;transform:translateX(-18px)}}
 @media (min-width:900px){@keyframes viewin{from{opacity:0;transform:translateY(8px)}}}
+/* collage: two columns on phones, three on desktop, photos keep their shape */
+.photos.collage{display:flex;gap:8px;align-items:flex-start;max-width:560px}
+.photos.collage .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.notes .photos.collage .photo img{border-radius:10px;transition:transform .25s ease,box-shadow .25s ease}
+@media (min-width:900px){.photos.collage{max-width:680px}}
+/* photo viewer */
+.notes .photo img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:60;background:rgba(14,12,12,.94);display:flex;align-items:center;justify-content:center;
+  padding:calc(56px + env(safe-area-inset-top,0px)) 12px calc(76px + env(safe-area-inset-bottom,0px));animation:lbin .22s ease both;touch-action:pan-y}
+@keyframes lbin{from{opacity:0}}
+.lb-fig{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px;max-width:100%;max-height:100%}
+.lb-fig img{max-width:100%;max-height:calc(100vh - 190px);max-height:calc(100dvh - 190px);border-radius:10px;object-fit:contain;animation:lbimg .28s cubic-bezier(.2,.8,.2,1) both;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+@keyframes lbimg{from{opacity:0;transform:scale(.94)}}
+.lb-fig figcaption{color:rgba(255,255,255,.85);font-size:15px;text-align:center}
+.lb-btn{position:absolute;background:rgba(255,255,255,.12);color:#fff;border:0;width:44px;height:44px;border-radius:50%;font-size:20px;display:grid;place-items:center;transition:background-color .15s}
+.lb-btn:hover{background:rgba(255,255,255,.22)}
+.lb-close{top:calc(10px + env(safe-area-inset-top,0px));right:12px}
+.lb-prev{left:12px;top:50%;transform:translateY(-50%);font-size:30px;line-height:1}
+.lb-next{right:12px;top:50%;transform:translateY(-50%);font-size:30px;line-height:1}
+.lb-bar{position:absolute;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;justify-content:center;gap:16px}
+.lb-count{color:rgba(255,255,255,.6);font-size:14px}
+.lb-dl{background:#fff;color:#1c1c1e;text-decoration:none;font-weight:600;font-size:16px;padding:11px 22px;border-radius:999px;transition:transform .12s}
+.lb-dl:active{transform:scale(.96)}
+@media (max-width:600px){.lb-prev,.lb-next{display:none}}
 .confetti{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:50}
 .notes a.btn-wa{background:#00a884;color:#fff;display:inline-flex;align-items:center;gap:10px}
 .notes a.btn-wa:hover{background:#008f72}
@@ -453,11 +477,17 @@ L: Personal request from me.
 <script type="text/plain" id="note-photos">
 # Some photos of us
 
-![Oasis, 2018](photos/oasis-2018.jpg)
-![Jaipur, 2019](photos/jaipur-2019.jpg)
-
-![Nainital, 2020](photos/nainital-2020.jpg)
-![Nainital, on a boat](photos/nainital-2020-boat.jpg)
+![](photos/oasis-2018.jpg)
+![](photos/jaipur-2019.jpg)
+![](photos/sparklers.jpg)
+![](photos/sunset.jpg)
+![](photos/dip.jpg)
+![](photos/palms-1.jpg)
+![](photos/blur-kiss.jpg)
+![](photos/saree.jpg)
+![](photos/polaroids.jpg)
+![](photos/nainital-2020.jpg)
+![](photos/nainital-2020-boat.jpg)
 </script>
 <div id="app" class="notes">
 
@@ -487,6 +517,13 @@ L: Personal request from me.
     <footer class="madewith">Made with ❤️ when in ❤️</footer>
   </section>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo" hidden>
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous photo">‹</button>
+    <figure class="lb-fig"><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Next photo">›</button>
+    <div class="lb-bar"><span class="lb-count" id="lbCount"></span><a class="lb-dl" id="lbDl" download>Download</a></div>
+  </div>
 
   <main id="main">
 
@@ -666,7 +703,7 @@ L: Personal request from me.
     </article>
 
     <article class="view letter" id="v-photos" hidden>
-      <div class="stamp">2018 – 2020</div>
+      <div class="stamp">2018 – now</div>
       <div class="letter" data-src="note-photos"></div>
     </article>
 
@@ -746,11 +783,14 @@ function renderLetter(src, el = $("#letterBody")){
       else if (l === "{{RSVP}}"){ html += `<div class="cta r"><button class="btn-coming" id="comingBtn">I am coming</button><button class="link-cant" id="cantBtn">I really can't make it</button></div>`; i++; out.push(html); html = ""; continue; }
       else if (l.startsWith("-- ")){ html += `<p class="sign r">${inline(l.slice(3))}</p>`; i++; }
       else if (l.startsWith("![")){
-        const figs = [];
-        while (i < lines.length && lines[i].startsWith("![")){ const m = /^!\[(.*?)\]\((.+?)\)/.exec(lines[i]); if (m) figs.push(m[2] === "TODO"
-          ? `<figure class="photo"><div class="ph">Photo coming<br>${inline(m[1])}</div><figcaption>${inline(m[1])}</figcaption></figure>`
-          : `<figure class="photo"><img src="${escH(m[2])}" alt="${escH(m[1])}" loading="lazy"><figcaption>${inline(m[1])}</figcaption></figure>`); i++; }
-        html += `<div class="photos r">${figs.join("")}</div>`;
+        const ms = [];
+        while (i < lines.length && lines[i].startsWith("![")){ const m = /^!\[(.*?)\]\((.+?)\)/.exec(lines[i]); if (m) ms.push(m); i++; }
+        // 3+ photos in a row = collage: small thumbnails on the page, the full photo opens / downloads on tap
+        const collage = ms.length > 2;
+        const figs = ms.map(([, cap, src], k) => src === "TODO"
+          ? `<figure class="photo"><div class="ph">Photo coming<br>${inline(cap)}</div><figcaption>${inline(cap)}</figcaption></figure>`
+          : `<figure class="photo"><img src="${escH(collage ? src.replace(/^photos\//, "photos/thumbs/") : src)}" data-full="${escH(src)}" data-i="${k}" alt="${escH(cap || "Mudra and Lakshay")}" loading="lazy">${cap ? `<figcaption>${inline(cap)}</figcaption>` : ""}</figure>`);
+        html += `<div class="photos${collage ? " collage" : ""} r">${figs.join("")}</div>`;
       }
       else if (/^\[( |x)\] /i.test(l)){
         let items = "";
@@ -784,6 +824,18 @@ function renderLetter(src, el = $("#letterBody")){
 }
 renderLetter($("#letter-text").textContent);
 $$("[data-src]").forEach(el => renderLetter($("#" + el.dataset.src).textContent, el));
+/* deal collage photos into 2 columns (3 on desktop), left to right, so the order reads across */
+function layoutCollages(){
+  const n = innerWidth >= 900 ? 3 : 2;
+  $$(".photos.collage").forEach(c => {
+    if (+c.dataset.cols === n) return;
+    const figs = $$(".photo", c); c.innerHTML = ""; c.dataset.cols = n;
+    const cols = Array.from({ length: n }, () => { const d = document.createElement("div"); d.className = "col"; c.appendChild(d); return d; });
+    figs.forEach((f, i) => cols[i % n].appendChild(f));
+  });
+}
+layoutCollages();
+addEventListener("resize", layoutCollages);
 function closeAnnots(except){ $$(".annot.open").forEach(a => { if (a !== except){ a.classList.remove("open"); a.setAttribute("aria-expanded", "false"); } }); }
 document.addEventListener("click", e => {
   const a = e.target.closest(".annot");
@@ -805,7 +857,7 @@ const NOTES = [
   { id: "praises", slug: "praises-of-mudra",  t: "Praises of Mudra",         d: "2018",      s: "सुना है लोग उसे आँख भर के देखते हैं" },
   { id: "jodhpur", slug: "jodhpur",           t: "What to do in Jodhpur?",   d: "Last week", s: "Mehrangarh Fort. Go early." },
   { id: "details", slug: "details",           t: "Wedding details",          d: "2–3 Jan",   s: "Amritam Palace, Jodhpur" },
-  { id: "photos",  slug: "photos",            t: "Some photos of us",        d: "2020",      s: "Oasis, Jaipur, Nainital" }
+  { id: "photos",  slug: "photos",            t: "Some photos of us",        d: "11 photos", s: "Tap any photo to see it big" }
 ];
 function renderLists(active){
   const html = NOTES.map(n => `<li><button data-note="${n.slug}" aria-current="${n.id === active}"><div class="t">${escH(n.t)}</div><div class="s"><b>${n.d}</b>${escH(n.s)}</div></button></li>`).join("");
@@ -1122,6 +1174,33 @@ function lastReply(){ try { return JSON.parse(store.get("letter-reply") || "null
     else if (val && val.includes(" · ")){ const [d, t] = val.split(" · "); $(`#r-${w}`).value = d; R[w + "_t"] = t; press(w + "_t", t); }
   });
 })();
+
+/* ---------- photo viewer: tap a photo to see it big, swipe between photos, download ---------- */
+const LB = { list: [], i: 0 };
+function lbShow(i){
+  LB.i = (i + LB.list.length) % LB.list.length;
+  const img = LB.list[LB.i], cap = img.closest("figure")?.querySelector("figcaption")?.textContent || "";
+  const big = $("#lbImg"); big.style.animation = "none"; big.offsetWidth; big.style.animation = "";
+  big.src = img.dataset.full ? new URL(img.dataset.full, location.href).href : (img.currentSrc || img.src); big.alt = cap || img.alt; $("#lbCap").textContent = cap;
+  const name = "Mudra-Lakshay-" + big.src.split("/").pop().split("?")[0];
+  $("#lbDl").href = big.src; $("#lbDl").setAttribute("download", name);
+  $("#lbCount").textContent = LB.list.length > 1 ? `${LB.i + 1} / ${LB.list.length}` : "";
+  $("#lbPrev").hidden = $("#lbNext").hidden = LB.list.length < 2;
+}
+function lbOpen(img){
+  LB.list = $$("img", img.closest(".view")).filter(x => x.closest(".photo")).sort((a, b) => (+a.dataset.i || 0) - (+b.dataset.i || 0) || 0);
+  lbShow(LB.list.indexOf(img)); $("#lightbox").hidden = false; document.documentElement.style.overflow = "hidden";
+}
+function lbClose(){ $("#lightbox").hidden = true; document.documentElement.style.overflow = ""; }
+document.addEventListener("click", e => { const img = e.target.closest(".photo img"); if (img && !e.target.closest("#lightbox")) lbOpen(img); });
+$("#lbClose").addEventListener("click", lbClose);
+$("#lbPrev").addEventListener("click", () => lbShow(LB.i - 1));
+$("#lbNext").addEventListener("click", () => lbShow(LB.i + 1));
+$("#lightbox").addEventListener("click", e => { if (e.target.id === "lightbox") lbClose(); });
+addEventListener("keydown", e => { if ($("#lightbox").hidden) return; if (e.key === "Escape") lbClose(); if (e.key === "ArrowLeft") lbShow(LB.i - 1); if (e.key === "ArrowRight") lbShow(LB.i + 1); });
+let lbX = null;
+$("#lightbox").addEventListener("touchstart", e => { lbX = e.touches[0].clientX; }, { passive: true });
+$("#lightbox").addEventListener("touchend", e => { if (lbX === null) return; const dx = e.changedTouches[0].clientX - lbX; lbX = null; if (Math.abs(dx) > 50 && LB.list.length > 1) lbShow(LB.i + (dx < 0 ? 1 : -1)); });
 
 /* ---------- confetti: once when the link opens, again when the RSVP is done ---------- */
 function confetti(kind = "done"){
