@@ -163,8 +163,9 @@ textarea.field{min-height:120px;resize:vertical}
 .notelist button[aria-current="true"]{background:var(--n-sel)}
 .notes .listview{padding:calc(64px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 120px max(12px,env(safe-area-inset-left,0px))}
 .notes .listview h2{font-size:34px;font-weight:700;margin:0 6px 12px}
-.notes .listview .notelist{background:#fff;border-radius:12px}
-.notes .listview .notelist li+li button{border-top:.5px solid var(--n-line);border-radius:0}
+.notes .listview .notelist{background:#fff;border-radius:12px;overflow:hidden}
+.notes .listview .notelist button{border-radius:0}
+.notes .listview .notelist li+li button{border-top:.5px solid var(--n-line)}
 .notes.show-list{background:var(--n-side)}
 .notes.show-list .back{visibility:hidden}
 @media (min-width:900px){
@@ -188,9 +189,9 @@ a.link-cant:hover{text-decoration:underline}
 .icon-btn:hover{background:rgba(217,164,0,.12)}
 .icon-btn:active{transform:scale(.92)}
 .notelist button{transition:background-color .15s}
-.notelist button:hover{background:rgba(0,0,0,.05)}
-.notelist button[aria-current="true"]:hover{background:var(--n-sel)}
-.notelist button:active{background:rgba(0,0,0,.08)}
+@media (hover:hover){.notelist button:hover{background:#fff4cc}}
+.notelist button:active{background:#ffeaa3}
+.notelist button[aria-current="true"],.notelist button[aria-current="true"]:hover{background:var(--n-sel)}
 .notes .btn-coming{transition:background-color .15s,transform .12s,box-shadow .2s}
 .notes .btn-coming:hover{box-shadow:0 6px 18px rgba(0,0,0,.18);transform:translateY(-1px)}
 .notes .btn-coming:active{transform:scale(.97);box-shadow:none}
