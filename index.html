@@ -1178,17 +1178,16 @@ function flightsUrl(){
 }
 function paintFlights(){ const f = flightsUrl(); $("#flightsLink").href = f.url; $("#flightsHint").textContent = f.hint; }
 
-/* who else is coming: first names + initial, from the Sheet (needs the updated Apps Script) */
+/* who else is coming: everyone who said yes (first name + initial), straight from the Sheet */
 async function loadGuests(p){
   $("#whos").hidden = true;
   if (!CONFIG.sheetUrl || p.attendance === "Can't make it") return;
   try {
     const r = await fetch(CONFIG.sheetUrl + "?list=1");
     const { names } = await r.json();
-    const me = p.name.split(" ")[0].toLowerCase();
-    const others = (names || []).filter(n => n.split(" ")[0].toLowerCase() !== me);
-    if (!others.length) return;
-    $("#whoList").innerHTML = others.map(n => `<li><span class="ini">${esc(n[0])}</span>${esc(n)}</li>`).join("");
+    const all = names || [];
+    if (!all.length) return;
+    $("#whoList").innerHTML = all.map(n => `<li><span class="ini">${esc(n[0])}</span>${esc(n)}</li>`).join("");
     $("#whos").hidden = false;
   } catch(e){}
 }
