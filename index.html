@@ -258,7 +258,7 @@ a.link-cant:hover{text-decoration:underline}
 /* collage: two columns on phones, three on desktop, photos keep their shape */
 .photos.collage{display:flex;gap:8px;align-items:flex-start;max-width:560px}
 .photos.collage .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-.notes .photos.collage .photo img{border-radius:10px;transition:transform .25s ease,box-shadow .25s ease}
+.notes .photos.collage .photo img{height:auto;border-radius:10px;transition:transform .25s ease,box-shadow .25s ease}
 @media (min-width:900px){.photos.collage{max-width:680px}}
 /* photo viewer */
 .notes .photo img{cursor:zoom-in}
@@ -297,6 +297,26 @@ a.link-cant:hover{text-decoration:underline}
 .who-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .who-list li{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--n-side);font-size:15px;animation:stepin .35s ease both}
 .who-list .ini{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#ffe27a;font-size:12px;font-weight:700}
+/* event cards */
+.events{display:grid;gap:12px}
+.event{display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:16px;background:var(--tint);border:.5px solid rgba(0,0,0,.06)}
+.ev-icon{flex:none;width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.75);display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.ev-icon svg{width:46px;height:46px}
+.event:nth-child(1) .ev-icon svg{animation:spin 24s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.event:nth-child(2) .ev-icon svg{animation:sway 3.6s ease-in-out infinite;transform-origin:50% 0}
+.event:nth-child(4) .ev-icon svg path:nth-child(-n+3){transform-origin:50% 70%;animation:flicker 1.6s ease-in-out infinite}
+@keyframes flicker{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.06) skewX(-2deg)}}
+.ev-body{min-width:0;display:grid;gap:2px}
+.ev-when{margin:0;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--n-grey)}
+.ev-name{margin:0;font-size:19px;line-height:1.25}
+.ev-theme{margin:2px 0 0;font-weight:600;font-size:15px}
+.ev-idea{margin:0;font-size:15px;color:#48484a}
+.ev-sw{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-wrap:wrap;gap:6px 10px}
+.ev-sw li{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#48484a}
+.ev-sw i{width:18px;height:18px;border-radius:50%;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.15)}
+.ev-sw.shimmer i{background-size:200% 200%!important;animation:shine 2.4s ease-in-out infinite}
+@keyframes shine{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
 .madewith{margin-top:40px;text-align:center;color:var(--n-grey);font-size:13px}
 .sidebar .madewith{margin-top:auto;padding-top:24px}
 .notes .listview .count{text-align:center;color:var(--n-grey);font-size:13px;margin:16px 0 0}
@@ -382,11 +402,7 @@ The stay is on us.
 
 **Dates & Occasions**
 
-| Date | Time | Occasion | Dress code |
-| 2 Jan ’27 | Morning | Haldi | Pastels, except blue |
-| 2 Jan ’27 | Evening | Sangeet & After Party | Glittery |
-| 3 Jan ’27 | Morning | Mayra | Traditional colours |
-| 3 Jan ’27 | Evening | Phere | Whatever you like |
+{{EVENTS}}
 </script>
 
 <!-- Other notes, same markup as the letter. -->
@@ -459,11 +475,7 @@ If you're coming early or staying back, here's our list.
 **Where:** Amritam Palace, Jodhpur
 **Stay:** on us
 
-| Date | Time | Occasion | Dress code |
-| 2 Jan ’27 | Morning | Haldi | Pastels, except blue |
-| 2 Jan ’27 | Evening | Sangeet & After Party | Glittery |
-| 3 Jan ’27 | Morning | Mayra | Traditional colours |
-| 3 Jan ’27 | Evening | Phere | Whatever you like |
+{{EVENTS}}
 
 ### Good to know
 - 💃 Dance a lot at every function. It's ==mandatory==.
@@ -545,11 +557,6 @@ L: Personal request from me.
         </div>
 
 
-        <div class="step" data-step="whatsapp">
-          <p class="qn" data-count></p>
-          <label class="qt" for="r-wa">What's your WhatsApp number?</label>
-          <input class="field" id="r-wa" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210">
-        </div>
 
         <div class="step" data-step="side">
           <p class="qn" data-count></p>
@@ -586,20 +593,6 @@ L: Personal request from me.
           </div>
         </div>
 
-        <div class="step" data-step="partner">
-          <p class="qn" data-count></p>
-          <p class="qt">Is your partner joining us?</p>
-          <div class="opts" data-k="partner">
-            <button type="button" class="opt" data-v="Yes"><span class="dot"></span>Yes, we're both coming</button>
-            <button type="button" class="opt" data-v="No"><span class="dot"></span>No, just me</button>
-            <button type="button" class="opt" data-v="Single"><span class="dot"></span>I'm single</button>
-          </div>
-          <div class="substep" id="partnerWrap" hidden>
-            <label class="sublabel" for="r-partner">What's your partner's full name?</label>
-            <input class="field" id="r-partner" placeholder="Partner's full name">
-          </div>
-        </div>
-
         <div class="step" data-step="city">
           <p class="qn" data-count></p>
           <label class="qt" for="r-city">Which city are you travelling from?</label>
@@ -610,7 +603,6 @@ L: Personal request from me.
           <p class="qn" data-count></p>
           <p class="qt">When will you arrive?</p>
           <input class="field" id="r-arr" type="date" min="2026-12-28" max="2027-01-03" aria-label="Arrival date">
-          <div class="chips" data-k="arr_t" aria-label="Approximate arrival time"><button type="button" class="chip" data-v="early morning">Early morning</button><button type="button" class="chip" data-v="morning">Morning</button><button type="button" class="chip" data-v="afternoon">Afternoon</button><button type="button" class="chip" data-v="evening">Evening</button><button type="button" class="chip" data-v="late night">Late night</button></div>
           <button type="button" class="opt multi" id="r-arr-u" aria-pressed="false"><span class="dot"></span>Not decided yet</button>
         </div>
 
@@ -618,7 +610,6 @@ L: Personal request from me.
           <p class="qn" data-count></p>
           <p class="qt">When will you leave?</p>
           <input class="field" id="r-dep" type="date" min="2027-01-02" max="2027-01-07" aria-label="Departure date">
-          <div class="chips" data-k="dep_t" aria-label="Approximate departure time"><button type="button" class="chip" data-v="early morning">Early morning</button><button type="button" class="chip" data-v="morning">Morning</button><button type="button" class="chip" data-v="afternoon">Afternoon</button><button type="button" class="chip" data-v="evening">Evening</button><button type="button" class="chip" data-v="late night">Late night</button></div>
           <button type="button" class="opt multi" id="r-dep-u" aria-pressed="false"><span class="dot"></span>Not decided yet</button>
         </div>
 
@@ -664,7 +655,7 @@ L: Personal request from me.
       <ul class="checks todo">
         <li><span class="box"></span><span><b>Haldi</b> – a pastel outfit (anything but blue)</span></li>
         <li><span class="box"></span><span><b>Sangeet</b> – your loudest outfit, and shoes you can dance in</span></li>
-        <li><span class="box"></span><span><b>Mayra</b> – leheriya, or your favourite ethnic outfit</span></li>
+        <li><span class="box"></span><span><b>Mayra</b> – your favourite ethnic outfit</span></li>
         <li><span class="box"></span><span><b>Wedding</b> – your absolute best</span></li>
         <li><span class="box"></span><span><b>Dance preparation</b> – learn the steps before the Sangeet</span></li>
         <li><span class="box"></span><span>A shawl or jacket. January nights in Jodhpur are cold.</span></li>
@@ -753,8 +744,38 @@ function inline(t){
     .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
 }
 const WHO = { M: "Mudra", L: "Lakshay" };
-const SPECIAL = /^(#{1,3} |---$|\{\{RSVP\}\}$|-- |!\[|\[( |x)\] |[-*] |\||[ML]: |>( |$))/i;
+const SPECIAL = /^(#{1,3} |---$|\{\{RSVP\}\}$|\{\{EVENTS\}\}$|-- |!\[|\[( |x)\] |[-*] |\||[ML]: |>( |$))/i;
 let letterPreview = "";
+/* ---------- the four events, each with its own icon, theme and outfit swatches ---------- */
+const EVENTS = [
+  { name: "Haldi", when: "2 Jan · Morning", theme: "Pastels, except blue", idea: "A pastel outfit (anything but blue)", icon: "sunflower", tint: "#fff5d4",
+    sw: [["Peach", "#f7cdb5"], ["Mint", "#cfe8d4"], ["Lilac", "#ddd0ee"], ["Butter", "#f8e7a6"], ["Blush", "#f5c9d3"]] },
+  { name: "Sangeet & After Party", when: "2 Jan · Evening", theme: "Glittery", idea: "Your loudest outfit, and shoes you can dance in", icon: "disco", tint: "#f0ecf8",
+    sw: [["Gold", "linear-gradient(135deg,#fbe7a1,#d4a53a 55%,#fff1c2)"], ["Silver", "linear-gradient(135deg,#fafafa,#a9aab2 55%,#eeeeef)"], ["Rose gold", "linear-gradient(135deg,#f8d3c6,#c98270 55%,#f6d9cf)"], ["Sequin black", "linear-gradient(135deg,#6b6b70,#141416 55%,#4a4a4f)"]], shimmer: true },
+  { name: "Mayra", when: "3 Jan · Morning", theme: "Traditional colours", idea: "Your favourite ethnic outfit", icon: "kalash", tint: "#fbe9e4",
+    sw: [["Red", "#c8323c"], ["Mustard", "#d9a227"], ["Green", "#2f7d4f"], ["Rani pink", "#d94c8a"], ["Orange", "#e8742a"]] },
+  { name: "Phere", when: "3 Jan · Evening", theme: "Whatever you like", idea: "Your absolute best", icon: "agni", tint: "#fbf2df",
+    sw: [["Any colour", "conic-gradient(#e5383b,#f4a259,#f6cd5c,#84a98c,#5e87c0,#9b7ad1,#d9738b,#e5383b)"]] }
+];
+const ICONS = {
+  sunflower: `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 40c0 8-1 14-3 20" stroke="#5f8a4e" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M30 52c-7-1-11-5-12-10 6 0 10 3 12 10z" fill="#6f9a5c"/>${Array.from({ length: 16 }, (_, k) => `<ellipse cx="32" cy="12" rx="4.2" ry="9.5" transform="rotate(${k * 22.5} 32 27)" fill="${k % 2 ? "#f6c33b" : "#f2b02a"}" stroke="#d9901a" stroke-width=".6"/>`).join("")}<circle cx="32" cy="27" r="8.6" fill="#6b3d1e"/><circle cx="32" cy="27" r="6.4" fill="#7d4a25"/>${Array.from({ length: 14 }, (_, k) => { const a = k * 2.4, r = 1.2 + k * .38; return `<circle cx="${(32 + Math.cos(a) * r).toFixed(1)}" cy="${(27 + Math.sin(a) * r).toFixed(1)}" r=".7" fill="#3f2310"/>`; }).join("")}</svg>`,
+  disco: `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 2v10" stroke="#8d8d96" stroke-width="1.6"/><defs><radialGradient id="dsc" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#c9c3dd"/><stop offset="1" stop-color="#6e6884"/></radialGradient><clipPath id="dcl"><circle cx="32" cy="34" r="20"/></clipPath></defs><circle cx="32" cy="34" r="20" fill="url(#dsc)"/><g clip-path="url(#dcl)" stroke="#8a84a0" stroke-width=".6" fill="none">${[18, 22.5, 27, 31.5, 36, 40.5, 45, 49.5].map(y => `<path d="M10 ${y}H54"/>`).join("")}${[-15, -9, -3, 3, 9, 15].map(x => `<ellipse cx="32" cy="34" rx="${Math.abs(x) + .1}" ry="20"/>`).join("")}</g><rect x="22" y="23" width="4" height="4" fill="#fff" opacity=".9"/><rect x="36" y="38" width="4" height="4" fill="#f6d77a" opacity=".8"/><rect x="27" y="44" width="4" height="3.5" fill="#d9a6ff" opacity=".7"/><path d="M52 10l1.4 3.6 3.6 1.4-3.6 1.4L52 20l-1.4-3.6L47 15l3.6-1.4z" fill="#f2b02a"/><path d="M11 12l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="#d9738b"/><path d="M55 46l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" fill="#5e87c0"/></svg>`,
+  kalash: `<svg viewBox="0 0 64 64" aria-hidden="true">${[-38, -16, 0, 16, 38].map(a => `<path d="M32 22C29 15 30 8 32 4c2 4 3 11 0 18z" transform="rotate(${a} 32 22)" fill="${a % 32 ? "#6f9a5c" : "#5c8a4b"}"/>`).join("")}<ellipse cx="32" cy="18" rx="7.5" ry="6.5" fill="#9a6a3a"/><path d="M27 15c2-2 8-2 10 0" stroke="#7a5028" stroke-width="1" fill="none"/><path d="M21 26h22l-2 4c7 3 10 9 10 15 0 9-8 15-19 15S13 54 13 45c0-6 3-12 10-15z" fill="#d9a227"/><path d="M21 26h22l-2 4H23z" fill="#c08a1c"/><path d="M15 43h34" stroke="#c8323c" stroke-width="3"/><path d="M15.5 47h33" stroke="#2f7d4f" stroke-width="1.6"/><path d="M28 36l4 4 4-4-4-4z" fill="#c8323c"/><circle cx="32" cy="36" r="1.3" fill="#fff4cc"/>${[20, 26, 38, 44].map(x => `<circle cx="${x}" cy="52" r="1.1" fill="#fff4cc"/>`).join("")}</svg>`,
+  agni: `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 6c3 8 12 12 12 24 0 7-5 12-12 12s-12-5-12-12c0-6 3-9 5-13 1 4 3 6 5 6-2-6 0-12 2-17z" fill="#f08a24"/><path d="M32 18c2 6 7 8 7 15 0 4-3 7-7 7s-7-3-7-7c0-3 2-5 3-7 1 2 2 3 3 3-1-4 0-8 1-11z" fill="#f6c33b"/><path d="M32 29c1 3 3 4 3 7 0 2-1.5 3.5-3 3.5S29 38 29 36c0-2 2-4 3-7z" fill="#fff1c2"/><path d="M12 44h40l-4 12H16z" fill="#b5541a"/><path d="M10 42h44v4H10z" fill="#d06a19"/><path d="M16 50h32" stroke="#f6c33b" stroke-width="1.2" stroke-dasharray="2 3"/>${[18, 26, 34, 42].map(x => `<path d="M${x} 40l6-4" stroke="#8a4b20" stroke-width="2.4" stroke-linecap="round"/>`).join("")}</svg>`
+};
+function eventsHTML(){
+  return `<div class="events r">${EVENTS.map(e => `<section class="event" style="--tint:${e.tint}">
+    <div class="ev-icon">${ICONS[e.icon]}</div>
+    <div class="ev-body">
+      <p class="ev-when">${e.when}</p>
+      <h3 class="ev-name">${e.name}</h3>
+      <p class="ev-theme">${e.theme}</p>
+      <p class="ev-idea">${e.idea}</p>
+      <ul class="ev-sw${e.shimmer ? " shimmer" : ""}" aria-label="Colour ideas">${e.sw.map(([n, c]) => `<li><i style="background:${c}"></i>${n}</li>`).join("")}</ul>
+    </div></section>`).join("")}</div>`;
+}
+// photo shapes (height / width), so the collage can balance its columns before the photos load
+const RATIO = {"photos/blur-kiss.jpg": 1.5005, "photos/dip.jpg": 1.25, "photos/jaipur-2019.jpg": 0.707, "photos/nainital-2020-boat.jpg": 0.707, "photos/nainital-2020.jpg": 0.707, "photos/oasis-2018.jpg": 1.4144, "photos/palms-1.jpg": 1.5005, "photos/polaroids.jpg": 1.3333, "photos/saree.jpg": 1.3333, "photos/sparklers.jpg": 1.4973, "photos/sunset.jpg": 0.6679};
 function renderLetter(src, el = $("#letterBody")){
   const out = [], main = el.id === "letterBody";
   src.replace(/\r/g, "").trim().split(/\n\s*\n/).forEach(block => {
@@ -781,6 +802,7 @@ function renderLetter(src, el = $("#letterBody")){
         html += `<blockquote class="quote r"><p>${q.join("<br>")}</p>${by ? `<cite>${by}</cite>` : ""}</blockquote>`;
       }
       else if (l === "{{RSVP}}"){ html += `<div class="cta r"><button class="btn-coming" id="comingBtn">I am coming</button><button class="link-cant" id="cantBtn">I really can't make it</button></div>`; i++; out.push(html); html = ""; continue; }
+      else if (l === "{{EVENTS}}"){ html += eventsHTML(); i++; }
       else if (l.startsWith("-- ")){ html += `<p class="sign r">${inline(l.slice(3))}</p>`; i++; }
       else if (l.startsWith("![")){
         const ms = [];
@@ -789,7 +811,7 @@ function renderLetter(src, el = $("#letterBody")){
         const collage = ms.length > 2;
         const figs = ms.map(([, cap, src], k) => src === "TODO"
           ? `<figure class="photo"><div class="ph">Photo coming<br>${inline(cap)}</div><figcaption>${inline(cap)}</figcaption></figure>`
-          : `<figure class="photo"><img src="${escH(collage ? src.replace(/^photos\//, "photos/thumbs/") : src)}" data-full="${escH(src)}" data-i="${k}" alt="${escH(cap || "Mudra and Lakshay")}" loading="lazy">${cap ? `<figcaption>${inline(cap)}</figcaption>` : ""}</figure>`);
+          : `<figure class="photo"><img src="${escH(collage ? src.replace(/^photos\//, "photos/thumbs/") : src)}" data-full="${escH(src)}" data-i="${k}"${RATIO[src] ? ` width="100" height="${Math.round(RATIO[src] * 100)}"` : ""} alt="${escH(cap || "Mudra and Lakshay")}" loading="lazy">${cap ? `<figcaption>${inline(cap)}</figcaption>` : ""}</figure>`);
         html += `<div class="photos${collage ? " collage" : ""} r">${figs.join("")}</div>`;
       }
       else if (/^\[( |x)\] /i.test(l)){
@@ -824,14 +846,35 @@ function renderLetter(src, el = $("#letterBody")){
 }
 renderLetter($("#letter-text").textContent);
 $$("[data-src]").forEach(el => renderLetter($("#" + el.dataset.src).textContent, el));
-/* deal collage photos into 2 columns (3 on desktop), left to right, so the order reads across */
+/* collage: each photo goes into the shortest column (2 on phones, 3 on desktop), so the order reads
+   across and the columns end level */
 function layoutCollages(){
   const n = innerWidth >= 900 ? 3 : 2;
   $$(".photos.collage").forEach(c => {
-    if (+c.dataset.cols === n) return;
-    const figs = $$(".photo", c); c.innerHTML = ""; c.dataset.cols = n;
-    const cols = Array.from({ length: n }, () => { const d = document.createElement("div"); d.className = "col"; c.appendChild(d); return d; });
-    figs.forEach((f, i) => cols[i % n].appendChild(f));
+    if (+c.dataset.cols !== n){
+      const figs = $$(".photo", c).sort((a, b) => $("img", a).dataset.i - $("img", b).dataset.i);
+      const r = figs.map(f => (RATIO[$("img", f).dataset.full] || 1.25) + 0.04);
+      // try every split (first photos pinned to the top of each column) and keep the most even one
+      let best = null, bestD = Infinity;
+      const pick = new Array(figs.length), h = new Array(n).fill(0);
+      (function go(i){
+        if (i === figs.length){ const d = Math.max(...h) - Math.min(...h); if (d < bestD){ bestD = d; best = pick.slice(); } return; }
+        for (let k = 0; k < n; k++){
+          if (i < n && k !== i) continue;
+          pick[i] = k; h[k] += r[i]; if (Math.max(...h) - Math.min(...h) < bestD + 3) go(i + 1); h[k] -= r[i];
+        }
+      })(0);
+      c.innerHTML = ""; c.dataset.cols = n;
+      const cols = Array.from({ length: n }, () => { const d = document.createElement("div"); d.className = "col"; c.appendChild(d); return d; });
+      figs.forEach((f, i) => cols[best[i]].appendChild(f));
+    }
+    // stretch the last photo of each shorter column a little (cropped) so the columns end level
+    const cols = $$(".col", c), w = cols[0]?.clientWidth || 0; if (!w) return;
+    const hs = cols.map(col => $$("img", col).reduce((s, im) => s + (RATIO[im.dataset.full] || 1.25) * w, 0) + 8 * ($$("img", col).length - 1));
+    const top = Math.max(...hs);
+    cols.forEach((col, k) => { const imgs = $$("img", col), last = imgs[imgs.length - 1]; if (!last) return;
+      imgs.forEach(im => { im.style.height = ""; im.style.objectFit = ""; });
+      const extra = top - hs[k]; if (extra > 1){ last.style.height = ((RATIO[last.dataset.full] || 1.25) * w + extra) + "px"; last.style.objectFit = "cover"; } });
   });
 }
 layoutCollages();
@@ -879,6 +922,7 @@ function show(id, opts = {}){
   $("#listView").hidden = true; $("#main").hidden = false; app.classList.remove("show-list");
   const note = NOTES.find(n => n.id === id);
   if (id === "details") paintFlights();
+  if (id === "photos") requestAnimationFrame(layoutCollages);
   renderLists(note ? id : "letter");
   document.title = note && id !== "letter" ? `${note.t} · Mudra & Lakshay` : baseTitle;
   if (!opts.keepScroll) scrollTo({ top: 0, behavior: "auto" });
@@ -965,10 +1009,10 @@ const R = { side: "", attendance: "", missing: [], partner: "", arr_t: "", dep_t
 let cant = false, si = 0;
 const stepEl = k => $(`.step[data-step="${k}"]`);
 function flow(){
-  if (cant) return ["name", "whatsapp", "side", "known", "notes"];
-  const base = ["name", "whatsapp", "side", "known", "attendance"];
+  if (cant) return ["name", "side", "known", "notes"];
+  const base = ["name", "side", "known", "attendance"];
   if (R.attendance === "Can't make it") return base;
-  return base.concat(["partner", "city", "arrival", "departure", "notes"]);
+  return base.concat(["city", "arrival", "departure", "notes"]);
 }
 function press(k, v, on = true){ const b = $(`[data-k="${k}"] [data-v="${CSS.escape(v)}"]`); if (b) b.setAttribute("aria-pressed", on); }
 
@@ -985,9 +1029,8 @@ $$("#replyForm [data-k]").forEach(g => {
         $("#missWrap").hidden = R.attendance !== "Missing a bit";
         if (R.attendance !== "Missing a bit"){ R.missing = []; $$('[data-k="missing"] button').forEach(x => x.setAttribute("aria-pressed", "false")); }
       }
-      if (k === "partner"){ $("#partnerWrap").hidden = R.partner !== "Yes"; if (R.partner === "Yes") setTimeout(() => $("#r-partner").focus(), 60); }
       paintNav();
-      const auto = k === "side" || (k === "attendance" && R.attendance === "All four") || (k === "partner" && R.partner === "No");
+      const auto = k === "side" || (k === "attendance" && R.attendance === "All four");
       if (auto) setTimeout(() => go(1), 260);
     });
   });
@@ -1005,21 +1048,16 @@ function validate(k){
   const v = s => $(s).value.trim();
   switch (k){
     case "name": return v("#r-name").length > 1 ? "" : "Tell us your full name.";
-    case "whatsapp": return v("#r-wa").replace(/\D/g, "").length >= 10 ? "" : "That number looks short. Add the country code if you're outside India.";
     case "side": return R.side ? "" : "Pick a side. (Groom, obviously.)";
     case "known": return v("#r-known").length > 1 ? "" : "Tell us in a line or two.";
     case "attendance":
       if (!R.attendance) return "Pick one.";
       if (R.attendance === "Missing a bit" && !R.missing.length) return "Tap the event(s) you'll miss.";
       return "";
-    case "partner":
-      if (!R.partner) return "Yes or no?";
-      if (R.partner === "Yes" && v("#r-partner").length < 2) return "What's your partner's full name?";
-      return "";
     case "city": return v("#r-city").length > 1 ? "" : "Which city are you coming from?";
-    case "arrival": return R.arr_u || (v("#r-arr") && R.arr_t) ? "" : "Pick a date and a rough time, or tap Not decided yet.";
+    case "arrival": return R.arr_u || v("#r-arr") ? "" : "Pick a date, or tap Not decided yet.";
     case "departure":
-      if (!(R.dep_u || (v("#r-dep") && R.dep_t))) return "Pick a date and a rough time, or tap Not decided yet.";
+      if (!(R.dep_u || v("#r-dep"))) return "Pick a date, or tap Not decided yet.";
       if (!R.dep_u && !R.arr_u && v("#r-dep") < v("#r-arr")) return "You're leaving before you arrive? Check the dates.";
       return "";
   }
@@ -1035,7 +1073,7 @@ function showStep(i){
   $$(".step").forEach(el => el.classList.toggle("active", el.dataset.step === f[si]));
   const el = stepEl(f[si]);
   if (f[si] === "known") $("#knownQ").textContent = R.side === "Bride's side" ? "How do you know Mudra?" : R.side === "Both sides" ? "How do you know us?" : "How do you know Lakshay?";
-  if (f[si] === "notes" && !cant) $("#notesHint").textContent = R.partner === "Yes" ? "Optional. If your partner's dates are different, add them here." : NOTES_HINT;
+
   $(".qn", el).textContent = `${si + 1} of ${f.length}`;
   $("#progBar").style.width = `${((si + 1) / f.length) * 100}%`;
   $("#err").textContent = "";
@@ -1070,17 +1108,18 @@ $("#cantBtn").addEventListener("click", () => nav("cant-make-it"));
 async function submit(){
   const v = s => $(s).value.trim();
   const isCant = cant || R.attendance === "Can't make it";
-  const when = w => R[w + "_u"] ? "Not decided yet" : `${v("#r-" + w)} · ${R[w + "_t"]}`;
+  const when = w => R[w + "_u"] ? "Not decided yet" : v("#r-" + w);
   const p = {
-    name: v("#r-name"), whatsapp: v("#r-wa"), side: R.side, how_known: v("#r-known"),
+    name: v("#r-name"), whatsapp: "", side: R.side, how_known: v("#r-known"),
     attendance: isCant ? "Can't make it" : R.attendance,
     missing_events: !isCant && R.attendance === "Missing a bit" ? R.missing.join(", ") : "",
-    partner_joining: isCant ? "" : R.partner, partner_name: !isCant && R.partner === "Yes" ? v("#r-partner") : "",
-    guests: isCant ? 0 : (R.partner === "Yes" ? 2 : 1),
+    partner_joining: "", partner_name: "",
+    guests: isCant ? 0 : 1,
     city: isCant ? "" : v("#r-city"), arrival: isCant ? "" : when("arr"), departure: isCant ? "" : when("dep"),
     notes: isCant && !cant ? "" : v("#r-notes"), invited_as: toName, submitted_at: new Date().toISOString()
   };
   store.set("letter-reply", JSON.stringify(p));
+  try { celebrate(); } catch(e){}
   setUrl("done", true);
   done(p, true);
   setTimeout(() => confetti("done"), 250);
@@ -1153,7 +1192,7 @@ async function loadGuests(p){
     $("#whos").hidden = false;
   } catch(e){}
 }
-const nice = w => { const m = /^(\d{4})-(\d\d)-(\d\d) · (.*)$/.exec(w || ""); if (!m) return w; return new Date(+m[1], m[2] - 1, +m[3]).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) + ", " + m[4]; };
+const nice = w => { const m = /^(\d{4})-(\d\d)-(\d\d)/.exec(w || ""); if (!m) return w; return new Date(+m[1], m[2] - 1, +m[3]).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }); };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 /* a reply that didn't reach the Sheet last time is sent again */
 (function retryPending(){ try { const p = JSON.parse(store.get("letter-pending") || "null"); if (p && CONFIG.sheetUrl && !PREVIEW) fetch(CONFIG.sheetUrl, { method: "POST", mode: "no-cors", keepalive: true, headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(p) }).then(() => store.set("letter-pending", "")); } catch(e){} })();
@@ -1163,17 +1202,66 @@ function lastReply(){ try { return JSON.parse(store.get("letter-reply") || "null
 (function restore(){
   const p = lastReply();
   if (!p) return;
-  $("#r-name").value = p.name || ""; $("#r-wa").value = p.whatsapp || ""; $("#r-known").value = p.how_known || ""; $("#r-notes").value = p.notes || "";
+  $("#r-name").value = p.name || ""; $("#r-known").value = p.how_known || ""; $("#r-notes").value = p.notes || "";
   if (p.side){ R.side = p.side; press("side", p.side); }
   if (p.attendance){ R.attendance = p.attendance; press("attendance", p.attendance); $("#missWrap").hidden = p.attendance !== "Missing a bit"; }
   if (p.missing_events){ R.missing = p.missing_events.split(", "); R.missing.forEach(m => press("missing", m)); }
-  if (p.partner_joining){ R.partner = p.partner_joining; press("partner", p.partner_joining); $("#partnerWrap").hidden = p.partner_joining !== "Yes"; $("#r-partner").value = p.partner_name || ""; }
   $("#r-city").value = p.city || "";
   [["arr", p.arrival], ["dep", p.departure]].forEach(([w, val]) => {
     if (val === "Not decided yet") setUndec(w, true);
-    else if (val && val.includes(" · ")){ const [d, t] = val.split(" · "); $(`#r-${w}`).value = d; R[w + "_t"] = t; press(w + "_t", t); }
+    else if (/^\d{4}-\d\d-\d\d/.test(val || "")) $(`#r-${w}`).value = val.slice(0, 10);
   });
 })();
+
+/* ---------- celebration sound after the RSVP: dhol, a shehnai-style flourish, ghungroo, all synthesised ---------- */
+function celebrate(){
+  const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+  const ctx = new AC(), t0 = ctx.currentTime + 0.05;
+  const out = ctx.createDynamicsCompressor(); out.connect(ctx.destination);
+  const master = ctx.createGain(); master.gain.value = 0.55; master.connect(out);
+  const noise = (() => { const b = ctx.createBuffer(1, ctx.sampleRate * 0.4, ctx.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; })();
+  // dhol: a low "dha" with a pitch drop, a bright "tin" slap
+  const drum = (t, f, dec, vol, slap) => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "sine"; o.frequency.setValueAtTime(f * 1.8, t); o.frequency.exponentialRampToValueAtTime(f, t + 0.06);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dec);
+    o.connect(g).connect(master); o.start(t); o.stop(t + dec + 0.05);
+    if (slap){ const n = ctx.createBufferSource(), bp = ctx.createBiquadFilter(), ng = ctx.createGain();
+      n.buffer = noise; bp.type = "bandpass"; bp.frequency.value = 2400; bp.Q.value = 1.2;
+      ng.gain.setValueAtTime(slap, t); ng.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+      n.connect(bp).connect(ng).connect(master); n.start(t); n.stop(t + 0.12); }
+  };
+  const beat = 0.19;
+  ["D", "", "t", "D", "t", "t", "D", "", "D", "", "t", "D", "t", "t", "D", "D"].forEach((k, i) => {
+    const t = t0 + i * beat;
+    if (k === "D") drum(t, 70, 0.32, 0.9, 0.12);
+    if (k === "t") drum(t, 190, 0.12, 0.35, 0.35);
+  });
+  // ghungroo on the off-beats
+  for (let i = 0; i < 16; i++){ const t = t0 + i * beat + beat / 2, o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "triangle"; o.frequency.value = 3200 + (i % 3) * 420;
+    g.gain.setValueAtTime(0.05, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+    o.connect(g).connect(master); o.start(t); o.stop(t + 0.1); }
+  // shehnai-style melody: reedy tone with vibrato, rising to Sa
+  const note = (t, f, d, v = 0.16) => {
+    const o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), lfo = ctx.createOscillator(), lg = ctx.createGain();
+    const bp = ctx.createBiquadFilter(), g = ctx.createGain();
+    o1.type = "sawtooth"; o2.type = "square"; o1.frequency.value = f; o2.frequency.value = f * 2.001;
+    lfo.frequency.value = 5.6; lg.gain.value = f * 0.012; lfo.connect(lg); lg.connect(o1.frequency); lg.connect(o2.frequency);
+    bp.type = "bandpass"; bp.frequency.value = f * 2.4; bp.Q.value = 0.9;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + 0.04); g.gain.setValueAtTime(v, t + d - 0.06); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    const g2 = ctx.createGain(); g2.gain.value = 0.35;
+    o1.connect(bp); o2.connect(g2).connect(bp); bp.connect(g).connect(master);
+    [o1, o2, lfo].forEach(o => { o.start(t); o.stop(t + d + 0.05); });
+  };
+  const Sa = 523.25, r = x => Sa * Math.pow(2, x / 12);
+  [[0, 0, .18], [2, .19, .18], [4, .38, .18], [7, .57, .38], [9, .95, .18], [7, 1.14, .18], [12, 1.33, .55], [11, 1.9, .14], [12, 2.05, .14], [14, 2.2, .14], [16, 2.36, .3], [14, 2.68, .14], [12, 2.83, .7]]
+    .forEach(([st, at, d]) => note(t0 + at, r(st), d));
+  // closing chord: Sa Ga Pa, bright and short
+  [0, 4, 7, 12].forEach(st => note(t0 + 3.05, r(st), 0.5, 0.07));
+  drum(t0 + 3.05, 62, 0.6, 1, 0.2);
+  setTimeout(() => ctx.close(), 4500);
+}
 
 /* ---------- photo viewer: tap a photo to see it big, swipe between photos, download ---------- */
 const LB = { list: [], i: 0 };
